@@ -25,7 +25,6 @@
       </flex-box>
 
       <list-menu
-        :lists="lists"
         :current-list-id.sync="listId"
         class="task-input__preset-item">
       </list-menu>
@@ -57,15 +56,6 @@ export default {
         paddingBottom: '0px'
       },
       listId: '',
-      lists: [{
-        id: '1',
-        title: 'test1',
-        color: 'red'
-      }, {
-        id: '2',
-        title: 'test2',
-        color: 'blue'
-      }],
       priority: '4'
     }
   },

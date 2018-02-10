@@ -38,7 +38,6 @@
           justify="flex-start"
           class="task-details__tip">
           <list-menu
-            :lists="lists"
             :current-list-id.sync="task.group_id"
             class="task-details__tip-item">
           </list-menu>
@@ -135,16 +134,7 @@ export default {
         },
         autoLink: true,
         targetBlank: true
-      },
-      lists: [{
-        id: '1',
-        title: 'test1',
-        color: 'red'
-      }, {
-        id: '2',
-        title: 'test2',
-        color: 'blue'
-      }]
+      }
     }
   },
   methods: {
