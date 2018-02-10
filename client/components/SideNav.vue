@@ -5,27 +5,11 @@
     <!-- side nav top -->
     <div class="side-nav__top">
       <nav-item
-        label="Inbox"
-        :num="12"
-        :is-active="true">
-        <i slot="icon" class="iconfont icon-inbox"></i>
-      </nav-item>
-
-      <nav-item
-        label="Today"
-        :num="12">
-        <i slot="icon" class="iconfont icon-activity"></i>
-      </nav-item>
-
-      <nav-item
-        label="Next 7 Days"
-        :num="0">
-        <i slot="icon" class="iconfont icon-7"></i>
-      </nav-item>
-
-      <nav-item
-        label="Done">
-        <i slot="icon" class="iconfont icon-done"></i>
+        v-for="(item, index) in navs"
+        :key="index"
+        :icon="item.icon"
+        :label="item.title"
+        :num="item.num">
       </nav-item>
     </div>
 
@@ -74,6 +58,23 @@ export default {
   data () {
     return {
       activeTab: 'group',
+      navs: [{
+        title: 'Inbox',
+        num: 12,
+        icon: 'inbox'
+      }, {
+        title: 'Today',
+        num: 12,
+        icon: 'activity'
+      }, {
+        title: 'Next 7 Days',
+        num: 0,
+        icon: '7'
+      }, {
+        title: 'Done',
+        num: 0,
+        icon: 'done'
+      }],
       lists: [{
         title: 'Test Test Test TestTestTestTest',
         index: 1,
