@@ -8,7 +8,7 @@
         label="Inbox"
         :num="12"
         :is-active="true">
-        <i slot="icon" class="iconfont icon-task"></i>
+        <i slot="icon" class="iconfont icon-inbox"></i>
       </nav-item>
 
       <nav-item
@@ -25,7 +25,7 @@
 
       <nav-item
         label="Done">
-        <i slot="icon" class="iconfont icon-task1"></i>
+        <i slot="icon" class="iconfont icon-done"></i>
       </nav-item>
     </div>
 
