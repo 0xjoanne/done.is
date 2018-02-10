@@ -9,21 +9,21 @@
       <el-dropdown-item
         command="time"
         :class="['sort-menu__item', { 'active' : currentOrder === 'time' }]">
-        <i class="iconfont icon-date-order sort-menu__item-icon"></i>
+        <i class="iconfont icon-clock-circle-o sort-menu__item-icon"></i>
         <span>By time</span>
       </el-dropdown-item>
 
       <el-dropdown-item
         command="priority"
         :class="['sort-menu__item', { 'active' : currentOrder === 'priority' }]">
-        <i class="iconfont icon-priority-order sort-menu__item-icon"></i>
+        <i class="iconfont icon-exclamation-circle-o sort-menu__item-icon"></i>
         <span>By priority</span>
       </el-dropdown-item>
 
       <el-dropdown-item
         command="list"
         :class="['sort-menu__item', { 'active' : currentOrder === 'list' }]">
-        <i class="iconfont icon-menu sort-menu__item-icon"></i>
+        <i class="iconfont icon-list sort-menu__item-icon"></i>
         <span>By list</span>
       </el-dropdown-item>
     </el-dropdown-menu>
@@ -61,8 +61,7 @@ export default {
 }
 
 .sort-menu__item-icon {
-  font-size: 18px;
   vertical-align: middle;
-  margin-right: 5px;
+  margin-right: 7px;
 }
 </style>

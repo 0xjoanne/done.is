@@ -5,7 +5,7 @@
       placement="bottom"
       @command="handleCommand">
       <i
-        class="iconfont icon-exclamatory-mark-r priority-menu__icon"
+        class="iconfont icon-important priority-menu__icon"
         :style="currentDropdownIconStyle">
       </i>
 

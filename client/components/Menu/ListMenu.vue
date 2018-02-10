@@ -5,7 +5,7 @@
       placement="bottom"
       @command="handleCommand">
       <i
-        class="iconfont icon-folder list-menu__icon"
+        class="iconfont icon-folder1 list-menu__icon"
         :style="currentDropdownIconStyle">
       </i>
 
