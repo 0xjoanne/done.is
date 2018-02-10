@@ -1,7 +1,7 @@
 <template>
   <flex-box class="header">
     <div class="header__title">
-      All
+      {{ activeNav }}
     </div>
 
     <flex-box>
@@ -38,6 +38,7 @@
 
 <script>
 import FlexBox from 'components/Layout/FlexBox'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -48,7 +49,10 @@ export default {
       msgNum: 12,
       addInput: ''
     }
-  }
+  },
+  computed: mapState({
+    activeNav: state => state.nav
+  })
 }
 </script>
 
