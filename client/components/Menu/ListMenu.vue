@@ -6,7 +6,7 @@
       @command="handleCommand">
       <i
         class="iconfont icon-folder1 list-menu__icon"
-        :style="currentDropdownIconStyle">
+        :style="dropdownIconStyle">
       </i>
 
       <el-dropdown-menu slot="dropdown">
@@ -72,19 +72,10 @@ export default {
   computed: {
     currentList () {
       if (this.currentListId) {
-        let list = this.lists.filter(item => {return item.id === this.currentListId })
+        let list = this.lists.filter(item => { return item.id === this.currentListId })
         return list[0].title
       } else {
         return 'Inbox'
-      }
-    },
-    currentDropdownIconStyle () {
-      if (this.currentListId) {
-        let list = this.lists.filter(item => {return item.id === this.currentListId })
-        let defaultStyle = {
-          color: list[0].color
-        }
-        return Object.assign(defaultStyle, this.dropdownIconStyle)
       }
     }
   },
@@ -101,13 +92,9 @@ export default {
 </script>
 
 <style>
-.list-menu__icon,
-.list-menu__item-icon {
-  font-size: 20px;
-}
-
 .list-menu__icon {
   cursor: pointer;
+  font-size: 18px;
 }
 
 .list-menu__item.el-dropdown-menu__item {
@@ -121,6 +108,7 @@ export default {
 .list-menu__item-icon {
   vertical-align: middle;
   margin-right: 5px;
+  font-size: 20px;
 }
 
 .list-menu__label {

@@ -6,7 +6,7 @@
       @command="handleCommand">
       <i
         class="iconfont icon-important priority-menu__icon"
-        :style="currentDropdownIconStyle">
+        :style="dropdownIconStyle">
       </i>
 
       <el-dropdown-menu slot="dropdown">
@@ -93,12 +93,6 @@ export default {
   computed: {
     currentPriority () {
       return priorityMap[this.currentPriorityId]
-    },
-    currentDropdownIconStyle () {
-      let defaultStyle = {
-        color: priorityColorMap[this.currentPriorityId]
-      }
-      return Object.assign(defaultStyle, this.dropdownIconStyle)
     }
   },
   methods: {
@@ -112,7 +106,6 @@ export default {
 <style>
 .priority-menu__icon {
   cursor: pointer;
-  font-size: 20px;
 }
 
 .priority-menu__item.el-dropdown-menu__item {
