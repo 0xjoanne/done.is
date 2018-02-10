@@ -51,7 +51,7 @@ export default {
     }
   },
   computed: mapState({
-    activeNav: state => state.nav
+    activeNav: state => state.navTitle
   })
 }
 </script>

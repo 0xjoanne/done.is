@@ -4,32 +4,29 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  count: 0,
   task: {},
-  detailsVisibility: false
+  detailsVisibility: false,
+  navTitle: 'Inbox',
+  navId: '1'
 }
 
 const mutations = {
-  INCREMENT (state) {
-    state.count++
-  },
-  DECREMENT (state) {
-    state.count--
-  },
   SETTASK (state, task) {
     state.task = task
   },
   SETDETAILSVISIBILITY (state, visibility) {
-    state.detailsVisibility = visibility 
+    state.detailsVisibility = visibility
+  },
+  SETNAVTITLE (state, title) {
+    state.navTitle = title
+  },
+  SETNAVID (state, id) {
+    state.navId = id
   }
 }
 
 const actions = {
-  incrementAsync ({ commit }) {
-    setTimeout(() => {
-      commit('INCREMENT')
-    }, 200)
-  }
+
 }
 
 const store = new Vuex.Store({

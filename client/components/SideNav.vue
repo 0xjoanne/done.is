@@ -9,7 +9,9 @@
         :key="index"
         :icon="item.icon"
         :label="item.title"
-        :num="item.num">
+        :num="item.num"
+        :is-active="activeNavId === item.id"
+        @click.native="onClickNav(item.title, item.id)">
       </nav-item>
     </div>
 
@@ -35,7 +37,9 @@
           v-for="(item, index) in lists"
           :key="index"
           :item="item"
-          @edit-list="editList">
+          @edit-list="editList"
+          :is-active="activeNavId === item.id"
+          @click.native="onClickNav(item.title, item.id)">
         </list-item>
       </draggable>
     </div>
@@ -47,6 +51,7 @@ import draggable from 'vuedraggable'
 import NavItem from 'components/NavItem'
 import ListItem from 'components/ListItem'
 import FlexBox from 'components/Layout/FlexBox'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -59,24 +64,29 @@ export default {
     return {
       activeTab: 'group',
       navs: [{
+        id: '1',
         title: 'Inbox',
         num: 12,
         icon: 'inbox'
       }, {
+        id: '2',
         title: 'Today',
         num: 12,
         icon: 'activity'
       }, {
+        id: '3',
         title: 'Next 7 Days',
         num: 0,
         icon: '7'
       }, {
+        id: '4',
         title: 'Done',
         num: 0,
         icon: 'done'
       }],
       lists: [{
-        title: 'Test Test Test TestTestTestTest',
+        id: '5',
+        title: 'Inbox',
         index: 1,
         color: '#1890FF',
         tasks: [{
@@ -91,6 +101,7 @@ export default {
           title: '测试1'
         }]
       }, {
+        id: '6',
         title: 'Work',
         index: 3,
         color: '#FFD422',
@@ -98,12 +109,14 @@ export default {
           title: '测试1'
         }]
       }, {
+        id: '7',
         title: 'Happy',
         index: 5,
         color: '',
         tasks: []
       }, {
-        title: 'Test Test Test TestTestTestTest',
+        id: '8',
+        title: 'Life',
         index: 7,
         color: '#FF67A6',
         tasks: [{
@@ -121,6 +134,10 @@ export default {
     }
   },
   methods: {
+    onClickNav (title, id) {
+      this.$store.commit('SETNAVTITLE', title)
+      this.$store.commit('SETNAVID', id)
+    },
     addList () {
       this.$emit('add-list')
     },
@@ -130,7 +147,10 @@ export default {
     onEndDrag (e) {
       this.$sortable(e, this.lists)
     }
-  }
+  },
+  computed: mapState({
+    activeNavId: state => state.navId
+  })
 }
 </script>
 
