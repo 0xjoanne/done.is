@@ -1,7 +1,6 @@
 <template>
   <flex-box :class="['nav-item', { active: isActive }]">
-    <slot name="icon">
-    </slot>
+    <i :class="['iconfont', 'icon-' + icon]"></i>
 
     <span class="nav-item__label">
       {{ label }}
@@ -24,6 +23,10 @@ export default {
     isActive: {
       type: Boolean,
       default: false
+    },
+    icon: {
+      type: String,
+      required: true
     },
     label: {
       type: String,
