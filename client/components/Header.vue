@@ -86,9 +86,9 @@ export default {
 }
 
 .header__profile-icon {
-  font-size: 14px;
   color: rgba(0, 0, 0, 0.65);
   margin-right: 5px;
+  vertical-align: middle;
 }
 
 .el-dropdown-menu__item:not(.is-disabled):hover .header__profile-icon {
