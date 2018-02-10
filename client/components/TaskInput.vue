@@ -20,6 +20,7 @@
       :style="presetStyle">
       <flex-box class="task-input__preset-item">
         <i class="iconfont icon-calendar task-input__preset-icon"></i>
+        <!-- <i class="el-icon-date task-input__preset-icon"></i> -->
         <span class="task-input__preset-label">No due date</span>
       </flex-box>
 
@@ -125,11 +126,11 @@ export default {
 }
 
 .task-input__preset-item {
-  margin-right: 10px;
+  margin-right: 16px;
 }
 
 .task-input__preset-icon {
-  margin-right: 5px;
+  margin-right: 8px;
   cursor: pointer;
 }
 
