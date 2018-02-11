@@ -63,8 +63,8 @@ export default {
   data () {
     return {
       lists: [{
-        id: '5',
-        title: 'Inbox',
+        id: '7',
+        title: 'Test',
         index: 1,
         color: '#1890FF',
         tasks: [{
@@ -79,7 +79,7 @@ export default {
           title: '测试1'
         }]
       }, {
-        id: '6',
+        id: '8',
         title: 'Work',
         index: 3,
         color: '#FFD422',
@@ -87,13 +87,13 @@ export default {
           title: '测试1'
         }]
       }, {
-        id: '7',
+        id: '9',
         title: 'Happy',
         index: 5,
         color: '',
         tasks: []
       }, {
-        id: '8',
+        id: '10',
         title: 'Life',
         index: 7,
         color: '#FF67A6',
@@ -125,8 +125,10 @@ export default {
     handleCommand (list) {
       if (list === 'Inbox') {
         this.$emit('update:currentListId', '')
+        this.$emit('get-list-title', 'Inbox')
       } else {
         this.$emit('update:currentListId', list.id)
+        this.$emit('get-list-title', list.title)
       }
     }
   }

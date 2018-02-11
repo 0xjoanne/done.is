@@ -52,6 +52,10 @@ export default {
   background: #7d82963b;
 }
 
+.nav-item .iconfont {
+  font-size: 20px;
+}
+
 .nav-item__label {
   margin-left: 12px;
   flex: auto;

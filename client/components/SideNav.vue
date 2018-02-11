@@ -3,26 +3,25 @@
     <img src="../assets/logo.png" alt="logo" class="side-nav__logo">
 
     <!-- side nav top -->
-    <div class="side-nav__top">
-      <nav-item
-        v-for="(item, index) in navs"
-        :key="index"
-        :icon="item.icon"
-        :label="item.title"
-        :num="item.num"
-        :is-active="activeNavId === item.id"
-        @click.native="onClickNav(item.title, item.id)">
-      </nav-item>
-    </div>
+    <nav-item
+      v-for="(item, index) in navs"
+      v-if="index < 4"
+      :key="index"
+      :icon="item.icon"
+      :label="item.title"
+      :num="item.num"
+      :is-active="activeNavId === item.id"
+      @click.native="onClickNav(item.title, item.id)">
+    </nav-item>
 
     <div class="divider">
     </div>
 
-    <!-- side nav bottom -->
-    <div class="side-nav__bottom">
-      <flex-box class="side-nav__bottom-header">
+    <!-- side nav list -->
+    <div class="side-nav__list">
+      <flex-box class="side-nav__list-header">
         <span
-          class="side-nav__bottom-title">
+          class="side-nav__list-title">
           Lists
         </span>
 
@@ -47,6 +46,21 @@
         <i class="iconfont icon-detail"></i>
       </div>
     </div>
+
+    <div class="divider">
+    </div>
+
+    <!-- side nav bottom -->
+    <nav-item
+      v-for="(item, index) in navs"
+      v-if="index > 3"
+      :key="index"
+      :icon="item.icon"
+      :label="item.title"
+      :num="item.num"
+      :is-active="activeNavId === item.id"
+      @click.native="onClickNav(item.title, item.id)">
+    </nav-item>
   </div>
 </template>
 
@@ -87,10 +101,20 @@ export default {
         title: 'Done',
         num: 0,
         icon: 'done'
+      }, {
+        id: '5',
+        title: 'Archive',
+        num: 0,
+        icon: 'archive'
+      }, {
+        id: '6',
+        title: 'Trash',
+        num: 0,
+        icon: 'trash'
       }],
       lists: [{
-        id: '5',
-        title: 'Inbox',
+        id: '7',
+        title: 'Test',
         index: 1,
         color: '#1890FF',
         tasks: [{
@@ -105,7 +129,7 @@ export default {
           title: '测试1'
         }]
       }, {
-        id: '6',
+        id: '8',
         title: 'Work',
         index: 3,
         color: '#FFD422',
@@ -113,13 +137,13 @@ export default {
           title: '测试1'
         }]
       }, {
-        id: '7',
+        id: '9',
         title: 'Happy',
         index: 5,
         color: '',
         tasks: []
       }, {
-        id: '8',
+        id: '10',
         title: 'Life',
         index: 7,
         color: '#FF67A6',
@@ -174,11 +198,7 @@ export default {
   margin: 30px;
 }
 
-.side-nav__top .iconfont {
-  font-size: 20px;
-}
-
-.side-nav__bottom-header {
+.side-nav__list-header {
   padding: 0 30px;
   line-height: 40px;
 }
