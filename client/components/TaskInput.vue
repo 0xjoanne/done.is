@@ -20,7 +20,6 @@
       :style="presetStyle">
       <flex-box class="task-input__preset-item">
         <i class="iconfont icon-calendar task-input__preset-icon"></i>
-        <!-- <i class="el-icon-date task-input__preset-icon"></i> -->
         <span class="task-input__preset-label">No due date</span>
       </flex-box>
 
@@ -41,6 +40,7 @@
 import FlexBox from 'components/Layout/FlexBox'
 import ListMenu from 'components/Menu/ListMenu'
 import PriorityMenu from 'components/Menu/PriorityMenu'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -70,6 +70,21 @@ export default {
       this.presetStyle = {
         height: '46px',
         paddingBottom: '10px'
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      activeNavId: state => state.navId
+    })
+  },
+  watch: {
+    activeNavId: function (newValue, oldValue) {
+      let index = ['1', '2', '3', '4'].indexOf(newValue)
+      if (index > -1) {
+        this.listId = ''
+      } else {
+        this.listId = newValue
       }
     }
   }
