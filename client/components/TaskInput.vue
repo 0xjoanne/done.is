@@ -5,7 +5,7 @@
     <div class="task-input__title">
       <!-- start with = to create multiple task -->
       <el-input
-        placeholder="Type a task and press Enter to save"
+        :placeholder="placeholder"
         v-model="taskInput"
         class="task-input"
         @focus="showTaskPreset">
@@ -25,7 +25,8 @@
 
       <list-menu
         :current-list-id.sync="listId"
-        class="task-input__preset-item">
+        class="task-input__preset-item"
+        @get-list-title="getListTitle">
       </list-menu>
 
       <priority-menu
@@ -51,6 +52,7 @@ export default {
   data () {
     return {
       taskInput: '',
+      placeholder: 'Add a task to "Inbox", press Enter to save',
       presetStyle: {
         height: '0px',
         paddingBottom: '0px'
@@ -71,11 +73,16 @@ export default {
         height: '46px',
         paddingBottom: '10px'
       }
+    },
+    getListTitle (title) {
+      this.$store.commit('SETINPUTLISTTITLE', title)
     }
   },
   computed: {
     ...mapState({
-      activeNavId: state => state.navId
+      activeNavId: state => state.navId,
+      activeNavTitle: state => state.navTitle,
+      inputListTitle: state => state.inputListTitle
     })
   },
   watch: {
@@ -86,6 +93,17 @@ export default {
       } else {
         this.listId = newValue
       }
+    },
+    activeNavTitle: function (newValue, oldValue) {
+      let index = ['1', '2', '3', '4'].indexOf(this.activeNavId)
+      if (index > -1) {
+        this.placeholder = 'Add a task to "Inbox", press Enter to save'
+      } else {
+        this.placeholder = 'Add a task to "' + newValue + '", press Enter to save'
+      }
+    },
+    inputListTitle: function (newValue, oldValue) {
+      this.placeholder = 'Add a task to "' + newValue + '", press Enter to save'
     }
   }
 }
