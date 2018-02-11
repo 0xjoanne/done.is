@@ -100,7 +100,18 @@ export default {
       } else if (command === 'close') {
 
       } else if (command === 'delete') {
+        this.$confirm('All tasks of this list will be deleted. Are you sure you want to delete "' + this.item.title + '"?', 'Delete List', {
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          this.$message({
+            type: 'success',
+            message: 'Deleted successfully!'
+          })
+        }).catch(() => {
 
+        })
       }
     }
   }
