@@ -106,6 +106,7 @@ export default {
 <style>
 .priority-menu__icon {
   cursor: pointer;
+  font-size: 18px;
 }
 
 .priority-menu__item.el-dropdown-menu__item {
