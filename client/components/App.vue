@@ -76,11 +76,36 @@ body {
   background: #FF6656;
 }
 
+div.el-message {
+  padding: 20px;
+  min-width: inherit;
+  border-radius: 2px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.el-message--success {
+  border: none !important;
+  background-color: rgba(91, 195, 162, 0.9) !important;
+}
+
+.el-message__icon,
+.el-message__content {
+  color: white !important;
+}
+
+.el-message__icon {
+  font-size: 18px;
+}
+
+.el-message__content {
+  font-weight: bold;
+}
+
  /* overwrite vue2-medium-editor style */
  .medium-editor-element {
    min-height: 24px;
  }
- 
+
  .medium-editor-placeholder:after {
    color: #bbb;
  }
