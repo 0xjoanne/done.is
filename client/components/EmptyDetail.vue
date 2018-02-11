@@ -1,7 +1,7 @@
 <template>
   <div class="empty-detail">
     <i class="iconfont icon-detail empty-detail__icon"></i>
-    <p>Click a task title to view its details</p>
+    <p>Click task title to view details</p>
   </div>
 </template>
 
