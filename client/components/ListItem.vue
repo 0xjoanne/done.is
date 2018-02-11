@@ -46,8 +46,8 @@
           Edit
         </el-dropdown-item>
 
-        <el-dropdown-item command = "close">
-          Close
+        <el-dropdown-item command = "archive">
+          Archive
         </el-dropdown-item>
 
         <el-dropdown-item command = "delete">
@@ -96,23 +96,32 @@ export default {
     },
     handleCommand (command) {
       if (command === 'edit') {
-        this.$emit('edit-list', this.item)
-      } else if (command === 'close') {
-
+        this.editList()
+      } else if (command === 'archive') {
+        this.archiveList()
       } else if (command === 'delete') {
-        this.$confirm('All tasks of this list will be deleted. Are you sure you want to delete "' + this.item.title + '"?', 'Delete List', {
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: 'Deleted successfully!'
-          })
-        }).catch(() => {
-
-        })
+        this.deleteList()
       }
+    },
+    editList () {
+      this.$emit('edit-list', this.item)
+    },
+    archiveList () {
+      
+    },
+    deleteList () {
+      this.$confirm('All tasks of this list will be deleted. Are you sure you want to delete "' + this.item.title + '"?', 'Delete List', {
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: 'Deleted successfully!'
+        })
+      }).catch(() => {
+
+      })
     }
   }
 }
