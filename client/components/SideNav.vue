@@ -32,7 +32,7 @@
         </i>
       </flex-box>
 
-      <draggable v-model="lists" @end="onEndDrag">
+      <draggable v-model="lists" @end="onEndDrag" v-if="lists.length">
         <list-item
           v-for="(item, index) in lists"
           :key="index"
@@ -42,6 +42,10 @@
           @click.native="onClickNav(item.title, item.id)">
         </list-item>
       </draggable>
+
+      <div class="side-nav__empty" v-else>
+        <i class="iconfont icon-detail"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -185,5 +189,15 @@ export default {
 
 .side-nav__add-list:hover {
   color: white;
+}
+
+.side-nav__empty {
+  text-align: center;
+  margin-top: 30px;
+  color: #4d5161;
+}
+
+.side-nav__empty .iconfont {
+  font-size: 90px;
 }
 </style>
