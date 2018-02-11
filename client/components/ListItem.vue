@@ -107,7 +107,18 @@ export default {
       this.$emit('edit-list', this.item)
     },
     archiveList () {
-      
+      this.$confirm('All tasks of this list will be displayed in "Archive". Are you sure you want to archive "' + this.item.title + '"?', 'Archive List', {
+        confirmButtonText: 'Archive',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: 'Archived successfully!'
+        })
+      }).catch(() => {
+
+      })
     },
     deleteList () {
       this.$confirm('All tasks of this list will be deleted. Are you sure you want to delete "' + this.item.title + '"?', 'Delete List', {
