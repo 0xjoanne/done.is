@@ -67,6 +67,11 @@ body {
 }
 
 /* rewrite Element ui components */
+.el-aside,
+.el-main {
+  overflow: inherit !important;
+}
+
 .el-checkbox__input.is-checked+.el-checkbox__label {
   color: #434654 !important;
 }

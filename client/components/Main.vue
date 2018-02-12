@@ -1,5 +1,5 @@
 <template>
-  <el-row class="overflow--hidden">
+  <el-row>
     <el-col :span="14">
       <div class="main-container main-content">
         <flex-box
@@ -93,6 +93,7 @@ export default {
           title: 'Test to do',
           color: '#94D050',
           created_at: 'Today',
+          due_date: [2018, 2, 12],
           completed: false,
           desc: '',
           priority_id: '1',
@@ -104,6 +105,7 @@ export default {
           title: 'Hello world Hello world Hello world Hello world Hello world Hello world Hello world',
           color: '#FFAC2A',
           created_at: 'Yesterday',
+          due_date: [2018, 2, 11],
           completed: true,
           desc: '',
           priority_id: '4',
@@ -115,6 +117,7 @@ export default {
           title: 'Hello world',
           color: '#FFD422',
           created_at: 'Feb 22',
+          due_date: [2018, 2, 22],
           completed: false,
           desc: '',
           priority_id: '2',
@@ -129,6 +132,7 @@ export default {
           title: 'Test to do',
           color: '#1890FF',
           created_at: 'Today',
+          due_date: [2018, 2, 12],
           completed: false,
           desc: '',
           priority_id: '3',
@@ -140,6 +144,7 @@ export default {
           title: 'Hello world',
           color: '#41D9C7',
           created_at: 'Feb 22',
+          due_date: [2018, 2, 22],
           completed: false,
           desc: '',
           priority_id: '2',
@@ -151,6 +156,7 @@ export default {
           title: 'Test to do',
           color: '#A5C5C1',
           created_at: 'Today',
+          due_date: [2018, 2, 12],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -162,6 +168,7 @@ export default {
           title: 'Test to do',
           color: '#BD988C',
           created_at: 'Today',
+          due_date: [2018, 2, 12],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -173,6 +180,7 @@ export default {
           title: 'Test to do',
           color: '#FF67A6',
           created_at: 'Today',
+          due_date: [2018, 2, 12],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -184,6 +192,7 @@ export default {
           title: 'Hello world',
           color: '#8543E0',
           created_at: 'Feb 22',
+          due_date: [2018, 2, 22],
           completed: false,
           desc: '',
           priority_id: '4',
