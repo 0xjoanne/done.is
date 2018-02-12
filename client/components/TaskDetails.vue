@@ -33,12 +33,15 @@
       </flex-box>
     </div>
 
-    <calendar-dropdown
+    <dropdown
       :visible.sync="showCalendar"
-      :value.sync="task.due_date"
       :left="calendarLeft"
       :top="calendarTop">
-    </calendar-dropdown>
+      <calendar
+        :value="task.due_date"
+        @select="updateDueDate">
+      </calendar>
+    </dropdown>
 
     <div class="task-details__content">
       <div class="task-details__content-top">
@@ -102,7 +105,8 @@ import PriorityMenu from 'components/Menu/PriorityMenu'
 import SubtaskItem from 'components/subtaskItem'
 import MediumEditor from 'vue2-medium-editor'
 import EditorExtension from 'libs/editor'
-import CalendarDropdown from 'components/CalendarDropdown'
+import Dropdown from 'components/Dropdown'
+import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
 import moment from 'moment'
 
@@ -117,7 +121,8 @@ export default {
     PriorityMenu,
     SubtaskItem,
     MediumEditor,
-    CalendarDropdown
+    Dropdown,
+    Calendar
   },
   props: {
     task: {
@@ -167,6 +172,9 @@ export default {
       this.showCalendar = !this.showCalendar
       this.calendarLeft = e.target.offsetLeft - 158
       this.calendarTop = e.target.offsetTop + 28
+    },
+    updateDueDate (val) {
+      this.task.due_date = val
     },
     preventEnter (e) {
       if (e.keyCode === 13) {

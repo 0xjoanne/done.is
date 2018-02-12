@@ -1,33 +1,21 @@
 <template>
   <div
-    v-click-outside="hideCalendarDropdown"
-    class="calendar-dropdown"
+    v-click-outside="hideDropdown"
+    class="dropdown"
     :style="{'left': left + 'px', 'top': top + 'px'}"
     v-if="visible">
-    <calendar
-      :value="value"
-      @select="updateDueDate">
-    </calendar>
 
-    <div class="calendar-dropdown__arrow">
-    </div>
+    <slot></slot>
+
+    <div class="dropdown__arrow"></div>
   </div>
 </template>
 
 <script>
-import Calendar from 'components/Calendar'
-
 export default {
-  components: {
-    Calendar
-  },
   props: {
     visible: {
       type: Boolean,
-      required: true
-    },
-    value: {
-      type: Array,
       required: true
     },
     left: {
@@ -45,29 +33,26 @@ export default {
     }
   },
   methods: {
-    hideCalendarDropdown () {
+    hideDropdown () {
       this.$emit('update:visible', false)
-    },
-    updateDueDate (val) {
-      this.$emit('update:value', val)
     }
   }
 }
 </script>
 
 <style>
-.calendar-dropdown {
-  z-index: 999;
+.dropdown {
+  z-index: 9999;
   background: white;
-  padding: 10px;
+  padding: 20px 10px 10px;
   border: 1px solid #ebeef5;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
   position: absolute;
 }
 
-.calendar-dropdown__arrow,
-.calendar-dropdown__arrow:after {
+.dropdown__arrow,
+.dropdown__arrow:after {
   position: absolute;
   display: block;
   width: 0;
@@ -76,7 +61,7 @@ export default {
   border-style: solid;
 }
 
-.calendar-dropdown__arrow {
+.dropdown__arrow {
   border-width: 6px;
   filter: drop-shadow(0 2px 12px rgba(0, 0, 0, .03));
   top: -6px;
@@ -86,7 +71,7 @@ export default {
   border-bottom-color: #ebeef5;
 }
 
-.calendar-dropdown__arrow:after {
+.dropdown__arrow:after {
   top: 1px;
   content: '';
   border-width: 6px;

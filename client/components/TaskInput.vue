@@ -41,12 +41,15 @@
       </priority-menu>
     </flex-box>
 
-    <calendar-dropdown
+    <dropdown
       :visible.sync="showCalendar"
-      :value.sync="due_date"
       :left="calendarLeft"
       :top="calendarTop">
-    </calendar-dropdown>
+      <calendar
+        :value="due_date"
+        @select="updateDueDate">
+      </calendar>
+    </dropdown>
   </div>
 </template>
 
@@ -54,7 +57,8 @@
 import FlexBox from 'components/Layout/FlexBox'
 import ListMenu from 'components/Menu/ListMenu'
 import PriorityMenu from 'components/Menu/PriorityMenu'
-import CalendarDropdown from 'components/CalendarDropdown'
+import Dropdown from 'components/Dropdown'
+import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
 
 export default {
@@ -62,7 +66,8 @@ export default {
     FlexBox,
     ListMenu,
     PriorityMenu,
-    CalendarDropdown
+    Dropdown,
+    Calendar
   },
   data () {
     return {
@@ -101,6 +106,9 @@ export default {
       this.calendarLeft = e.target.offsetLeft - 158
       this.calendarTop = e.target.offsetTop + 28
     },
+    updateDueDate (val) {
+      this.due_date = val
+    }
   },
   computed: {
     ...mapState({
