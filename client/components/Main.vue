@@ -5,16 +5,23 @@
         <flex-box
           justify="flex-end"
           class="main-content__action-bar">
-          <search></search>
+          <search v-if="activeNavId !== '6'"></search>
 
           <sort-menu
             :currentOrder.sync="currentOrder"
-            class="main-content__sort-menu">
+            class="main-content__sort-menu"
+            v-if="activeNavId !== '6'">
           </sort-menu>
+
+          <i
+            class="iconfont icon-clean icon main-content__clean"
+            v-if="activeNavId === '6'"
+            @click="cleanTrash">
+          </i>
         </flex-box>
 
         <!-- task input  -->
-        <task-input></task-input>
+        <task-input v-if="activeNavId !== '5' && activeNavId !== '6'"></task-input>
 
         <!-- task list  -->
         <div v-if="tasks.length">
@@ -187,11 +194,14 @@ export default {
     }
   },
   methods: {
+    cleanTrash () {
 
+    }
   },
   computed: mapState({
     selectedTask: state => state.task,
-    detailsVisibility: state => state.detailsVisibility
+    detailsVisibility: state => state.detailsVisibility,
+    activeNavId: state => state.navId
   })
 }
 </script>
