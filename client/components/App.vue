@@ -37,6 +37,15 @@ body {
 }
 
 /* reusable style */
+.icon {
+  transition: all .2s;
+}
+
+.icon:hover {
+  transform: translateY(-15%);
+}
+
+.icon,
 .cursor--pointer {
   cursor: pointer;
 }

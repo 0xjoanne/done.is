@@ -4,7 +4,7 @@
     placement="bottom"
     @command="handleCommand"
     class="sort-menu">
-    <i class="el-icon-sort"></i>
+    <i class="el-icon-sort icon"></i>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item
         command="time"
@@ -48,7 +48,6 @@ export default {
 
 <style>
 .sort-menu.el-dropdown {
-  cursor: pointer;
   font-size: 16px;
 }
 

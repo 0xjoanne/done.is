@@ -132,7 +132,6 @@ export default {
 }
 
 .task-input__title-icon {
-  color: #ed4630;
   position: absolute;
   top: 20px;
   left: 20px;

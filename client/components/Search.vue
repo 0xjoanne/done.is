@@ -1,7 +1,7 @@
 <template>
   <div v-click-outside="hideSearch">
     <i
-      class="el-icon-search cursor--pointer search__icon"
+      class="el-icon-search search__icon icon"
       @click="showSearch">
     </i>
 
