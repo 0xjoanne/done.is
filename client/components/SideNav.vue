@@ -165,6 +165,7 @@ export default {
     onClickNav (title, id) {
       this.$store.commit('SETNAVTITLE', title)
       this.$store.commit('SETNAVID', id)
+      this.$store.commit('SETDETAILSVISIBILITY', false)
     },
     addList () {
       this.$emit('add-list')

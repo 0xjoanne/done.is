@@ -7,7 +7,8 @@ const state = {
   task: {},
   detailsVisibility: false,
   navTitle: 'Inbox',
-  navId: '1'
+  navId: '1',
+  inputListTitle: 'Inbox'
 }
 
 const mutations = {
@@ -22,6 +23,9 @@ const mutations = {
   },
   SETNAVID (state, id) {
     state.navId = id
+  },
+  SETINPUTLISTTITLE (state, title) {
+    state.inputListTitle = title
   }
 }
 
