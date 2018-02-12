@@ -29,8 +29,11 @@
       @close="resetAddListForm">
       <el-form
         :model="addListForm"
-        ref="addListForm">
+        status-icon
+        ref="addListForm"
+        :rules="rules">
         <el-form-item prop="title">
+          <!-- todo: validate "Duplicated list name" -->
           <el-input
             placeholder="Your list name here..."
             v-model="addListForm.title">
@@ -85,6 +88,11 @@ export default {
         title: '',
         color: ''
       },
+      rules: {
+        title: [
+          { required: true, message: 'Please enter list name', trigger: 'blur' }
+        ]
+      },
       editingList: null
     }
   },
@@ -99,6 +107,12 @@ export default {
       this.addListDialogVisible = true
       this.addListDialogTitle = title
       this.dialogType = type
+
+      // reset form
+      this.$nextTick(() => {
+        this.$refs['addListForm'].resetFields()
+      })
+
     },
     addList () {
       this.showListDialog('Add List', 'add')
@@ -112,13 +126,20 @@ export default {
       this.editingList = list
     },
     saveList () {
-      this.addListDialogVisible = false
-      if (this.dialogType === 'add') {
-        
-      } else if (this.dialogType === 'edit') {
-        this.editingList.title = this.addListForm.title
-        this.editingList.color = this.addListForm.color
-      }
+      this.$refs['addListForm'].validate((valid) => {
+        if (valid) {
+          this.addListDialogVisible = false
+          if (this.dialogType === 'add') {
+
+          } else if (this.dialogType === 'edit') {
+            this.editingList.title = this.addListForm.title
+            this.editingList.color = this.addListForm.color
+          }
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      })
     }
   }
 }
