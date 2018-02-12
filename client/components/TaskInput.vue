@@ -19,8 +19,14 @@
       class="task-input__preset"
       :style="presetStyle">
       <flex-box class="task-input__preset-item">
-        <i class="iconfont icon-calendar task-input__preset-icon"></i>
-        <span class="task-input__preset-label">No due date</span>
+        <i
+          class="iconfont icon-calendar task-input__preset-icon"
+          @click="toggleCalendar">
+        </i>
+
+        <span class="task-input__preset-label">
+          {{ due_date }}
+        </span>
       </flex-box>
 
       <list-menu
@@ -34,6 +40,13 @@
         class="task-input__preset-item">
       </priority-menu>
     </flex-box>
+
+    <calendar-dropdown
+      :visible.sync="showCalendar"
+      :value.sync="due_date"
+      :left="calendarLeft"
+      :top="calendarTop">
+    </calendar-dropdown>
   </div>
 </template>
 
@@ -41,13 +54,15 @@
 import FlexBox from 'components/Layout/FlexBox'
 import ListMenu from 'components/Menu/ListMenu'
 import PriorityMenu from 'components/Menu/PriorityMenu'
+import CalendarDropdown from 'components/CalendarDropdown'
 import { mapState } from 'vuex'
 
 export default {
   components: {
     FlexBox,
     ListMenu,
-    PriorityMenu
+    PriorityMenu,
+    CalendarDropdown
   },
   data () {
     return {
@@ -58,7 +73,11 @@ export default {
         paddingBottom: '0px'
       },
       listId: '',
-      priority: '4'
+      priority: '4',
+      due_date: [],
+      showCalendar: false,
+      calendarTop: 0,
+      calendarLeft: 0
     }
   },
   methods: {
@@ -76,7 +95,12 @@ export default {
     },
     getListTitle (title) {
       this.$store.commit('SETINPUTLISTTITLE', title)
-    }
+    },
+    toggleCalendar (e) {
+      this.showCalendar = !this.showCalendar
+      this.calendarLeft = e.target.offsetLeft - 158
+      this.calendarTop = e.target.offsetTop + 28
+    },
   },
   computed: {
     ...mapState({

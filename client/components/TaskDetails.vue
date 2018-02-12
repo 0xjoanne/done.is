@@ -11,16 +11,34 @@
         <flex-box
           justify="flex-start"
           class="task-details__duedate">
-          <i class="el-icon-date"></i>
-          <span class="task-details__duedate-label">Today, Feb 1</span>
+          <i
+            class="el-icon-date icon"
+            @click="toggleCalendar">
+          </i>
+
+          <span class="task-details__duedate-label">
+            {{ task.due_date }}
+          </span>
         </flex-box>
 
         <i
-          class="el-icon-delete cursor--pointer"
+          class="iconfont icon-restore icon task-details__restore"
+          v-if="activeNavId === '6'">
+        </i>
+
+        <i
+          class="el-icon-delete icon"
           @click="delTask">
         </i>
       </flex-box>
     </div>
+
+    <calendar-dropdown
+      :visible.sync="showCalendar"
+      :value.sync="task.due_date"
+      :left="calendarLeft"
+      :top="calendarTop">
+    </calendar-dropdown>
 
     <div class="task-details__content">
       <div class="task-details__content-top">
@@ -84,6 +102,9 @@ import PriorityMenu from 'components/Menu/PriorityMenu'
 import SubtaskItem from 'components/subtaskItem'
 import MediumEditor from 'vue2-medium-editor'
 import EditorExtension from 'libs/editor'
+import CalendarDropdown from 'components/CalendarDropdown'
+import { mapState } from 'vuex'
+import moment from 'moment'
 
 EditorExtension(MediumEditor)
 
@@ -95,7 +116,8 @@ export default {
     ListMenu,
     PriorityMenu,
     SubtaskItem,
-    MediumEditor
+    MediumEditor,
+    CalendarDropdown
   },
   props: {
     task: {
@@ -105,6 +127,9 @@ export default {
   },
   data () {
     return {
+      showCalendar: false,
+      calendarTop: 0,
+      calendarLeft: 0,
       subtaskInput: '',
       descOptions: {
         spellcheck: false,
@@ -138,6 +163,11 @@ export default {
     }
   },
   methods: {
+    toggleCalendar (e) {
+      this.showCalendar = !this.showCalendar
+      this.calendarLeft = e.target.offsetLeft - 158
+      this.calendarTop = e.target.offsetTop + 28
+    },
     preventEnter (e) {
       if (e.keyCode === 13) {
         e.cancelBubble = true
@@ -165,6 +195,11 @@ export default {
     onEndDrag (e) {
       this.$sortable(e, this.task.subtasks)
     }
+  },
+  computed: {
+    ...mapState({
+      activeNavId: state => state.navId
+    })
   }
 }
 </script>
@@ -172,6 +207,7 @@ export default {
 <style>
 .task-details {
   background: #fbfbfb;
+  position: relative;
 }
 
 /* header */
@@ -202,6 +238,11 @@ export default {
   overflow: hidden;
   font-size: 14px;
   margin-left: 5px;
+}
+
+.task-details__restore {
+  font-size: 20px;
+  margin-right: 10px;
 }
 
 /* content */
