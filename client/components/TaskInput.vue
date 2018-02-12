@@ -25,7 +25,7 @@
         </i>
 
         <span class="task-input__preset-label">
-          {{ due_date }}
+          {{ formatdate(due_date) }}
         </span>
       </flex-box>
 
@@ -47,6 +47,7 @@
       :top="calendarTop">
       <calendar
         :value="due_date"
+        :zero="true"
         @select="updateDueDate">
       </calendar>
     </dropdown>
@@ -60,6 +61,8 @@ import PriorityMenu from 'components/Menu/PriorityMenu'
 import Dropdown from 'components/Dropdown'
 import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
+import { formatdate } from 'libs/formatdate'
+import moment from 'moment'
 
 export default {
   components: {
@@ -86,6 +89,7 @@ export default {
     }
   },
   methods: {
+    formatdate,
     hideTaskPreset () {
       this.presetStyle = {
         height: '0px',

@@ -17,7 +17,7 @@
           </i>
 
           <span class="task-details__duedate-label">
-            {{ task.due_date }}
+            {{ formatdate(task.due_date) }}
           </span>
         </flex-box>
 
@@ -39,6 +39,7 @@
       :top="calendarTop">
       <calendar
         :value="task.due_date"
+        :zero="true"
         @select="updateDueDate">
       </calendar>
     </dropdown>
@@ -108,7 +109,7 @@ import EditorExtension from 'libs/editor'
 import Dropdown from 'components/Dropdown'
 import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
-import moment from 'moment'
+import { formatdate } from 'libs/formatdate'
 
 EditorExtension(MediumEditor)
 
@@ -168,6 +169,7 @@ export default {
     }
   },
   methods: {
+    formatdate,
     toggleCalendar (e) {
       this.showCalendar = !this.showCalendar
       this.calendarLeft = e.target.offsetLeft - 158
