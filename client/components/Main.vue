@@ -17,14 +17,24 @@
         <task-input></task-input>
 
         <!-- task list  -->
-        <div
-          v-for="(item, index) in tasks"
-          :key="index">
-          <task-list
-            :list="item"
-            v-if="item.content.length">
-          </task-list>
+        <div v-if="tasks.length">
+          <div
+            v-for="(item, index) in tasks"
+            :key="index">
+            <task-list
+              :list="item"
+              v-if="item.content.length">
+            </task-list>
+          </div>
         </div>
+
+        <empty-template
+          :templateStyle="{ height: 'calc(100vh - 185px)', paddingTop: '25%', background: 'white' }"
+          icon="nodata"
+          iconFontSize="120px"
+          label="Type a task and get it done!"
+          v-else>
+        </empty-template>
       </div>
     </el-col>
 
@@ -35,7 +45,11 @@
         v-if="detailsVisibility">
       </task-details>
 
-      <empty-detail v-else></empty-detail>
+      <empty-template
+        icon="detail"
+        label="Click task title to view details"
+        v-else>
+      </empty-template>
     </el-col>
   </el-row>
 </template>
@@ -46,7 +60,7 @@ import Search from 'components/Search'
 import SortMenu from 'components/Menu/SortMenu'
 import TaskInput from 'components/TaskInput'
 import TaskList from 'components/TaskList'
-import EmptyDetail from 'components/EmptyDetail'
+import EmptyTemplate from 'components/EmptyTemplate'
 import TaskDetails from 'components/TaskDetails'
 import { mapState } from 'vuex'
 
@@ -57,7 +71,7 @@ export default {
     SortMenu,
     TaskInput,
     TaskList,
-    EmptyDetail,
+    EmptyTemplate,
     TaskDetails
   },
   data () {
@@ -75,7 +89,7 @@ export default {
           completed: false,
           desc: '',
           priority_id: '1',
-          group_id: '',
+          group_id: '10',
           subtasks: []
         }, {
           id: 2,
@@ -97,7 +111,7 @@ export default {
           completed: false,
           desc: '',
           priority_id: '2',
-          group_id: '1',
+          group_id: '',
           subtasks: []
         }]
       }, {
@@ -195,9 +209,14 @@ export default {
 .main-content__action-bar {
   height: 60px;
   margin-left: 20px;
+  border-bottom: 1px solid #fbfbfb;
 }
 
 .main-content__sort-menu {
   margin: 0 20px 0 15px;
+}
+
+.main-content__clean {
+  margin-right: 20px;
 }
 </style>
