@@ -67,7 +67,6 @@ body {
 }
 
 /* rewrite Element ui components */
-.el-aside,
 .el-main {
   overflow: inherit !important;
 }
@@ -81,22 +80,28 @@ body {
   min-width: 90px;
 }
 
-.button--primary.el-button--primary {
+.button--default.el-button:focus,
+.button--default.el-button:hover,
+.el-message-box__btns .el-button--default:focus,
+.el-message-box__btns .el-button--default:hover {
+  color: rgba(234, 97, 81, 0.8);
+  background-color: rgba(234, 97, 81, 0.1);
+  border-color: rgba(234, 97, 81, 0.2);
+}
+
+.button--primary.el-button--primary,
+.el-message-box__btns .el-button--primary {
   background-color: #ea6151;
   border-color: #ea6151;
 }
 
 .button--primary.el-button--primary:focus,
-.button--primary.el-button--primary:hover {
+.button--primary.el-button--primary:hover,
+.el-message-box__btns .el-button--primary:focus,
+.el-message-box__btns .el-button--primary:hover {
+  color: white;
   background-color: rgba(234, 97, 81, 0.8);
   border-color: rgba(234, 97, 81, 0.8);
-}
-
-.button--default.el-button:focus,
-.button--default.el-button:hover {
-  color: rgba(234, 97, 81, 0.8);
-  background-color: rgba(234, 97, 81, 0.1);
-  border-color: rgba(234, 97, 81, 0.2);
 }
 
 .btn--red.el-button {
@@ -138,14 +143,22 @@ div.el-message {
   font-weight: bold;
 }
 
- /* overwrite vue2-medium-editor style */
- .medium-editor-element {
-   min-height: 24px;
- }
+div.el-message-box {
+  padding-bottom: 20px;
+}
 
- .medium-editor-placeholder:after {
-   color: #bbb;
- }
+div.el-message-box__content {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+ /* overwrite vue2-medium-editor style */
+.medium-editor-element {
+ min-height: 24px;
+}
+
+.medium-editor-placeholder:after {
+ color: #bbb;
+}
 
  /* toolbar */
 .medium-editor-toolbar,
