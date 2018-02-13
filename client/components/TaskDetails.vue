@@ -10,7 +10,7 @@
 
         <flex-box
           justify="flex-start"
-          class="task-details__duedate">
+          :class="['task-details__duedate', { expired : isexpired(task.due_date), none: task.due_date.length === 0 }]">
           <i
             class="el-icon-date icon"
             @click="toggleCalendar">
@@ -109,7 +109,7 @@ import EditorExtension from 'libs/editor'
 import Dropdown from 'components/Dropdown'
 import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
-import { formatdate } from 'libs/formatdate'
+import { formatdate, isexpired } from 'libs/formatdate'
 
 EditorExtension(MediumEditor)
 
@@ -170,6 +170,7 @@ export default {
   },
   methods: {
     formatdate,
+    isexpired,
     toggleCalendar (e) {
       this.showCalendar = !this.showCalendar
       this.calendarLeft = e.target.offsetLeft - 158
@@ -244,6 +245,14 @@ export default {
 .task-details__duedate {
   color: #617fde;
   flex: auto;
+}
+
+.task-details__duedate.expired {
+  color: #ea6151;
+}
+
+.task-details__duedate.none {
+  color: rgba(0,0,0,.36);
 }
 
 .task-details__duedate-label {

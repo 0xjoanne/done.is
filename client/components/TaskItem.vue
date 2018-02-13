@@ -21,7 +21,7 @@
 
         <div
           @click="checkDetails(task)"
-          class="task-item__date">
+          :class="['task-item__date', { expired : isexpired(task.due_date) }]">
           {{ formatshortdate(task.due_date) }}
         </div>
       </flex-box>
@@ -34,7 +34,7 @@ import CollapseTransition from 'components/CollapseTransition'
 import FlexBox from 'components/Layout/FlexBox'
 import Checkbox from 'components/Checkbox'
 import { mapState } from 'vuex'
-import { formatshortdate } from 'libs/formatdate'
+import { formatshortdate, isexpired } from 'libs/formatdate'
 
 export default {
   components: {
@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     formatshortdate,
+    isexpired,
     checkDetails (task) {
       this.$store.commit('SETTASK', task)
       this.$store.commit('SETDETAILSVISIBILITY', true)
@@ -110,5 +111,9 @@ export default {
   font-size: 12px;
   color: rgba(0,0,0,.36);
   flex: none;
+}
+
+.task-item__date.expired {
+  color: #ea6151;
 }
 </style>

@@ -1,5 +1,25 @@
 import moment from 'moment'
 
+
+moment.updateLocale('en', {
+  relativeTime : {
+    future: "%s later",
+    past:   "%s ago",
+    s  : 'a few seconds',
+    ss : '%d seconds',
+    m:  "a minute",
+    mm: "%d minutes",
+    h:  "an hour",
+    hh: "%d hours",
+    d:  "a day",
+    dd: "%d days",
+    M:  "a month",
+    MM: "%d months",
+    y:  "a year",
+    yy: "%d years"
+  }
+})
+
 export const formatdate = function (value) {
   if (value.length) {
     // format value as YYYYMMDD
@@ -50,6 +70,24 @@ export const formatshortdate = function (value) {
         return md
     }
   } else {
-    return "No due date"
+    return ""
+  }
+}
+
+export const isexpired = function (value) {
+  if (value.length) {
+    // format value as YYYYMMDD
+    let date = value.join('')
+
+    let now = moment().startOf('date')
+    let diff = moment(date).diff(now, 'days')
+
+    if (diff < 0) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return false
   }
 }
