@@ -8,7 +8,8 @@ const state = {
   detailsVisibility: false,
   navTitle: 'Inbox',
   navId: '1',
-  inputListTitle: 'Inbox'
+  inputListTitle: 'Inbox',
+  taskInputExpansion: false
 }
 
 const mutations = {
@@ -26,6 +27,9 @@ const mutations = {
   },
   SETINPUTLISTTITLE (state, title) {
     state.inputListTitle = title
+  },
+  SETTASKINPUTEXPANSION (state, value) {
+    state.taskInputExpansion = value
   }
 }
 

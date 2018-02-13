@@ -90,7 +90,8 @@ export default {
   },
   methods: {
     formatdate,
-    hideTaskPreset () {
+    hideTaskPreset (e) {
+      this.$store.commit('SETTASKINPUTEXPANSION', false)
       this.presetStyle = {
         height: '0px',
         paddingBottom: '0px'
@@ -101,6 +102,7 @@ export default {
         height: '46px',
         paddingBottom: '10px'
       }
+      this.$store.commit('SETTASKINPUTEXPANSION', true)
     },
     getListTitle (title) {
       this.$store.commit('SETINPUTLISTTITLE', title)

@@ -24,7 +24,10 @@
         <task-input v-if="activeNavId !== '5' && activeNavId !== '6'"></task-input>
 
         <!-- task list  -->
-        <div v-if="tasks.length">
+        <div
+          v-if="tasks.length"
+          class="main-content__task-list"
+          :style="{ height: taskListHeight }">
           <div
             v-for="(item, index) in tasks"
             :key="index">
@@ -93,7 +96,7 @@ export default {
           title: 'Test to do',
           color: '#94D050',
           created_at: 'Today',
-          due_date: [2018, 2, 12],
+          due_date: [],
           completed: false,
           desc: '',
           priority_id: '1',
@@ -105,7 +108,7 @@ export default {
           title: 'Hello world Hello world Hello world Hello world Hello world Hello world Hello world',
           color: '#FFAC2A',
           created_at: 'Yesterday',
-          due_date: [2018, 2, 11],
+          due_date: [2018, '02', '11'],
           completed: true,
           desc: '',
           priority_id: '4',
@@ -117,7 +120,7 @@ export default {
           title: 'Hello world',
           color: '#FFD422',
           created_at: 'Feb 22',
-          due_date: [2018, 2, 22],
+          due_date: [2018, '02', '22'],
           completed: false,
           desc: '',
           priority_id: '2',
@@ -132,7 +135,7 @@ export default {
           title: 'Test to do',
           color: '#1890FF',
           created_at: 'Today',
-          due_date: [2018, 2, 12],
+          due_date: [2018, '02', '12'],
           completed: false,
           desc: '',
           priority_id: '3',
@@ -144,7 +147,7 @@ export default {
           title: 'Hello world',
           color: '#41D9C7',
           created_at: 'Feb 22',
-          due_date: [2018, 2, 22],
+          due_date: [2018, '02', '22'],
           completed: false,
           desc: '',
           priority_id: '2',
@@ -156,7 +159,7 @@ export default {
           title: 'Test to do',
           color: '#A5C5C1',
           created_at: 'Today',
-          due_date: [2018, 2, 12],
+          due_date: [2018, '02', '12'],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -168,7 +171,7 @@ export default {
           title: 'Test to do',
           color: '#BD988C',
           created_at: 'Today',
-          due_date: [2018, 2, 12],
+          due_date: [2018, '02', '12'],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -180,7 +183,7 @@ export default {
           title: 'Test to do',
           color: '#FF67A6',
           created_at: 'Today',
-          due_date: [2018, 2, 12],
+          due_date: [2018, '02', '12'],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -192,7 +195,7 @@ export default {
           title: 'Hello world',
           color: '#8543E0',
           created_at: 'Feb 22',
-          due_date: [2018, 2, 22],
+          due_date: [2018, '02', '22'],
           completed: false,
           desc: '',
           priority_id: '4',
@@ -207,20 +210,25 @@ export default {
 
     }
   },
-  computed: mapState({
-    selectedTask: state => state.task,
-    detailsVisibility: state => state.detailsVisibility,
-    activeNavId: state => state.navId
-  })
+  computed: {
+    ...mapState({
+      selectedTask: state => state.task,
+      detailsVisibility: state => state.detailsVisibility,
+      activeNavId: state => state.navId,
+      taskInputExpansion: state => state.taskInputExpansion
+    }),
+    taskListHeight () {
+      if (this.taskInputExpansion) {
+        return 'calc(100vh - 231px)'
+      } else {
+        return 'calc(100vh - 185px)'
+      }
+    }
+  }
 }
 </script>
 
 <style>
-.main-container {
-  height: calc(100vh - 65px);
-  overflow: scroll;
-}
-
 .main-content {
   padding-right: 20px;
 }
@@ -237,5 +245,9 @@ export default {
 
 .main-content__clean {
   margin-right: 20px;
+}
+
+.main-content__task-list {
+  overflow: scroll;
 }
 </style>
