@@ -4,7 +4,7 @@
       'iconfont',
       completed ? 'icon-checkbox-selected-o' : 'icon-checkbox-o',
       'checkbox',
-      completed ? '' : priority
+      completed || !activePriorityColor ? '' : priority
     ]"
     @click="toggleStatus">
   </i>
@@ -28,6 +28,10 @@ export default {
     priorityId: {
       type: String,
       default: '4'
+    },
+    activePriorityColor: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -56,7 +60,7 @@ export default {
 
 .checkbox,
 .checkbox__none {
-  color: #dcdfe6;
+  color: #ccc;
 }
 
 .checkbox__high {

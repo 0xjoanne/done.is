@@ -5,6 +5,7 @@
         <checkbox
           :completed.sync="task.completed"
           :priority-id="task.priority_id"
+          :activePriorityColor="false"
           class="task-details__status">
         </checkbox>
 
