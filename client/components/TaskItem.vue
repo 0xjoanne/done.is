@@ -87,13 +87,13 @@ export default {
 .task-item__drag {
   color: #aaa;
   margin-right: 5px;
-  cursor: move;
+  /* cursor: move; */
   opacity: 0;
 }
 
-.task-item__container:hover .task-item__drag {
+/* .task-item__container:hover .task-item__drag {
   opacity: 1;
-}
+} */
 
 .task-item__title {
   margin: 0 10px;

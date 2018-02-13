@@ -16,13 +16,19 @@
       <div
         class="task-list__content"
         v-if="showList">
-        <draggable v-model="list.content" :options="{ group:'task' }" @end="onEndDrag">
+        <!-- <draggable v-model="list.content" :options="{ group:'task' }" @end="onEndDrag">
           <task-item
             v-for="(item, index) in list.content"
             :key="index"
             :task="item">
           </task-item>
-        </draggable>
+        </draggable> -->
+
+        <task-item
+          v-for="(item, index) in list.content"
+          :key="index"
+          :task="item">
+        </task-item>
       </div>
     </collapse-transition>
   </div>
