@@ -112,6 +112,9 @@ export default {
     },
     updateDueDate (val) {
       this.due_date = val
+    },
+    zeroPad(n){
+      return String(n < 10 ? '0' + n : n)
     }
   },
   computed: {
@@ -128,6 +131,16 @@ export default {
         this.listId = ''
       } else {
         this.listId = newValue
+      }
+
+      if (newValue === '2') {
+        this.due_date = [
+          moment().year(),
+          this.zeroPad(moment().month() + 1),
+          this.zeroPad(moment().date())
+        ]
+      } else {
+        this.due_date = []
       }
     },
     activeNavTitle: function (newValue, oldValue) {
