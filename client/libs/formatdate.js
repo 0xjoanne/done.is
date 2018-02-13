@@ -25,3 +25,31 @@ export const formatdate = function (value) {
     return "No due date"
   }
 }
+
+export const formatshortdate = function (value) {
+  if (value.length) {
+    // format value as YYYYMMDD
+    let date = value.join('')
+
+    let now = moment().startOf('date')
+    let diff = moment(date).diff(now, 'days')
+
+    let md = moment(date).format('MMM D')
+
+    switch (diff) {
+      case 0:
+        return 'Today'
+        break;
+      case -1:
+        return 'Yesterday'
+        break;
+      case 1:
+        return 'Tomorrow'
+        break;
+      default:
+        return md
+    }
+  } else {
+    return "No due date"
+  }
+}

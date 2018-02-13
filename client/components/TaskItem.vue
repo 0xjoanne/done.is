@@ -22,7 +22,7 @@
         <div
           @click="checkDetails(task)"
           class="task-item__date">
-          {{ task.created_at }}
+          {{ formatshortdate(task.due_date) }}
         </div>
       </flex-box>
     </div>
@@ -34,6 +34,7 @@ import CollapseTransition from 'components/CollapseTransition'
 import FlexBox from 'components/Layout/FlexBox'
 import Checkbox from 'components/Checkbox'
 import { mapState } from 'vuex'
+import { formatshortdate } from 'libs/formatdate'
 
 export default {
   components: {
@@ -53,6 +54,7 @@ export default {
     }
   },
   methods: {
+    formatshortdate,
     checkDetails (task) {
       this.$store.commit('SETTASK', task)
       this.$store.commit('SETDETAILSVISIBILITY', true)
