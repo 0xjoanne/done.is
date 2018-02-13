@@ -186,7 +186,11 @@ export default {
       }
     },
     delTask () {
-
+      this.$store.commit('SETDETAILSVISIBILITY', false)
+      this.$message({
+        type: 'success',
+        message: 'Deleted successfully!'
+      })
     },
     addSubtask () {
       if (!this.subtaskInput) {
@@ -247,7 +251,7 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   font-size: 14px;
-  margin-left: 5px;
+  margin-left: 8px;
 }
 
 .task-details__restore {

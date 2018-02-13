@@ -50,6 +50,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button
           size="medium"
+          class="button--default"
           @click="addListDialogVisible = false">
           Cancel
         </el-button>
@@ -57,6 +58,7 @@
         <el-button
           size="medium"
           type="primary"
+          class="button--primary"
           @click="saveList">
           Save
         </el-button>
@@ -130,10 +132,17 @@ export default {
         if (valid) {
           this.addListDialogVisible = false
           if (this.dialogType === 'add') {
-
+            this.$message({
+              type: 'success',
+              message: 'Added successfully!'
+            })
           } else if (this.dialogType === 'edit') {
             this.editingList.title = this.addListForm.title
             this.editingList.color = this.addListForm.color
+            this.$message({
+              type: 'success',
+              message: 'Edited successfully!'
+            })
           }
         } else {
           console.log('error submit!!');
