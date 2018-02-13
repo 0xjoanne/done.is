@@ -49,6 +49,21 @@
     <div class="calendar-years" :class="{'show':yearsShow}">
       <span v-for="y in years" @click.stop="selectYear(y)" :class="{'active':y==year}">{{y}}</span>
     </div>
+
+    <div class="calendar-footer">
+      <el-button
+        size="medium"
+        class="button--default">
+        Clear
+      </el-button>
+
+      <el-button
+        size="medium"
+        type="primary"
+        class="button--primary">
+        Ok
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -593,119 +608,119 @@ export default {
 
 <style scoped>
 .calendar {
-  margin:auto;
+  margin: auto;
   width: 100%;
-  min-width:300px;
+  min-width: 300px;
   background: #fff;
   font-family: "PingFang SC","Hiragino Sans GB","STHeiti","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
-  user-select:none;
+  user-select: none;
 }
 .calendar-tools{
-  height:40px;
+  height: 40px;
   font-size: 20px;
   line-height: 40px;
-  color:#5e7a88;
+  color: #5e7a88;
 }
 .calendar-tools span{
   cursor: pointer;
 }
 .calendar-prev{
   width: 14.28571429%;
-  float:left;
+  float: left;
   text-align: center;
 }
 .calendar-info{
   padding-top: 3px;
-  font-size:16px;
+  font-size: 16px;
   line-height: 1.3;
   text-align: center;
 }
 .calendar-info>div.month{
-  margin:auto;
-  height:20px;
-  width:100px;
+  margin: auto;
+  height: 20px;
+  width: 100px;
   text-align: center;
-  color:#5e7a88;
+  color: #5e7a88;
   overflow: hidden;
   position: relative;
 }
 .calendar-info>div.month .month-inner{
   position: absolute;
-  left:0;
-  top:0;
-  height:240px;
+  left: 0;
+  top: 0;
+  height: 240px;
   transition:top .5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .calendar-info>div.month .month-inner>span{
   display: block;
   font-size: 14px;
-  height:20px;
-  width:100px;
+  height: 20px;
+  width: 100px;
   overflow: hidden;
   text-align: center;
 }
 .calendar-info>div.year{
-  font-size:10px;
+  font-size: 10px;
   line-height: 1;
-  color:#999;
+  color: #999;
 }
 .calendar-next{
   width: 14.28571429%;
-  float:right;
+  float: right;
   text-align: center;
 }
 
 .calendar table {
   clear: both;
   width: 100%;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   border-collapse: collapse;
   color: #444444;
 }
 .calendar td {
-  margin:2px !important;
-  padding:0px 0;
+  margin: 2px !important;
+  padding: 0px 0;
   width: 14.28571429%;
-  height:44px;
+  height: 44px;
   text-align: center;
   vertical-align: middle;
-  font-size:14px;
+  font-size: 14px;
   line-height: 125%;
   cursor: pointer;
   position: relative;
   vertical-align: top;
 }
 .calendar td.week{
-  font-size:10px;
-  pointer-events:none !important;
+  font-size: 10px;
+  pointer-events: none !important;
   cursor: default !important;
 }
 .calendar td.disabled {
   color: #ccc;
-  pointer-events:none !important;
+  pointer-events: none !important;
   cursor: default !important;
 }
 .calendar td.disabled div{
   color: #ccc;
 }
 .calendar td span{
-  display:block;
-  max-width:40px;
-  height:26px;
+  display: block;
+  max-width: 40px;
+  height: 26px;
   font-size: 16px;
-  line-height:26px;
-  margin:0px auto;
-  border-radius:20px;
+  line-height: 26px;
+  margin: 0px auto;
+  border-radius: 20px;
 }
 .calendar td:not(.selected) span:not(.red):hover{
-  background:#f3f8fa;
-  color:#444;
+  background: #f3f8fa;
+  color: #444;
 }
 .calendar td:not(.selected) span.red:hover{
-  background:#f9efef;
+  background: #f9efef;
 }
 .calendar td:not(.disabled) span.red{
-  color:#ea6151;
+  color: #ea6151;
 }
 .calendar td.selected span{
   background-color: #5e7a88;
@@ -713,19 +728,19 @@ export default {
 }
 .calendar td .text{
   position: absolute;
-  top:28px;
-  left:0;
-  right:0;
+  top: 28px;
+  left: 0;
+  right: 0;
   text-align: center;
 
-  padding:2px;
-  font-size:8px;
+  padding: 2px;
+  font-size: 8px;
   line-height: 1.2;
-  color:#444;
+  color: #444;
 }
 .calendar td .isGregorianFestival,
 .calendar td .isLunarFestival{
-  color:#ea6151;
+  color: #ea6151;
 }
 .calendar td.selected span.red{
   background-color: #ea6151;
@@ -737,7 +752,7 @@ export default {
 }
 .calendar thead td {
   text-transform: uppercase;
-  height:30px;
+  height: 30px;
   vertical-align: middle;
 }
 .calendar-button{
@@ -749,8 +764,8 @@ export default {
   min-height: 1em;
   min-width: 5em;
   vertical-align: baseline;
-  background:#5e7a88;
-  color:#fff;
+  background: #5e7a88;
+  color: #fff;
   margin: 0 .25em 0 0;
   padding: .6em 2em;
   font-size: 1em;
@@ -759,20 +774,20 @@ export default {
   border-radius: .3em;
 }
 .calendar-button span.cancel{
-  background:#efefef;
-  color:#666;
+  background: #efefef;
+  color: #666;
 }
 .calendar-years{
   position: absolute;
-  left:0px;
-  top:60px;
-  right:0px;
-  bottom:0px;
-  background:#fff;
+  left: 0px;
+  top: 60px;
+  right: 0px;
+  bottom: 0px;
+  background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   overflow: auto;
   transition:all .5s cubic-bezier(0.075, 0.82, 0.165, 1);
   opacity: 0;
@@ -784,19 +799,26 @@ export default {
   pointer-events: auto;
   transform: translateY(0px);
 }
+
 .calendar-years>span{
-  margin:1px 5px;
+  margin: 1px 5px;
   display: inline-block;
-  width:60px;
+  width: 60px;
   line-height: 30px;
   border-radius: 20px;
-  text-align:center;
-  border:1px solid #fbfbfb;
-  color:#999;
+  text-align: center;
+  border: 1px solid #fbfbfb;
+  color: #999;
 }
+
 .calendar-years>span.active{
-  border:1px solid #5e7a88;
+  border: 1px solid #5e7a88;
   background-color: #5e7a88;
-  color:#fff;
+  color: #fff;
+}
+
+.calendar-footer {
+  text-align: right;
+  margin: 20px 5px 20px 0;
 }
 </style>

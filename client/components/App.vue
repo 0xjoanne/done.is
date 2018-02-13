@@ -78,6 +78,25 @@ body {
 
 .el-button {
   border-radius: 2px !important;
+  min-width: 90px;
+}
+
+.button--primary.el-button--primary {
+  background-color: #ea6151;
+  border-color: #ea6151;
+}
+
+.button--primary.el-button--primary:focus,
+.button--primary.el-button--primary:hover {
+  background-color: rgba(234, 97, 81, 0.8);
+  border-color: rgba(234, 97, 81, 0.8);
+}
+
+.button--default.el-button:focus,
+.button--default.el-button:hover {
+  color: rgba(234, 97, 81, 0.8);
+  background-color: rgba(234, 97, 81, 0.1);
+  border-color: rgba(234, 97, 81, 0.2);
 }
 
 .btn--red.el-button {
