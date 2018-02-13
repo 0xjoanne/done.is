@@ -59,7 +59,7 @@ const priorityMap = {
 }
 
 const priorityColorMap = {
-  1: '#ff0013',
+  1: '#ea6151',
   2: '#ffc200',
   3: '#00b950',
   4: '#aaa'

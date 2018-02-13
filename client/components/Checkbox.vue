@@ -51,6 +51,7 @@ export default {
 <style>
 .checkbox {
   font-size: 24px;
+  cursor: pointer;
 }
 
 .checkbox,
@@ -59,7 +60,7 @@ export default {
 }
 
 .checkbox__high {
-  color: #ff0013;
+  color: #ea6151;
 }
 
 .checkbox__medium {

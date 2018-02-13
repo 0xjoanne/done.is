@@ -76,6 +76,10 @@ body {
   color: #434654 !important;
 }
 
+.el-button {
+  border-radius: 2px !important;
+}
+
 .btn--red.el-button {
   width: 100%;
   background: #ed4630;
