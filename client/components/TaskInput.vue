@@ -46,9 +46,11 @@
       :left="calendarLeft"
       :top="calendarTop">
       <calendar
-        :value="due_date"
+        :value.sync="due_date"
         :zero="true"
-        @select="updateDueDate">
+        @select="selectDate"
+        @clear="showCalendar = false"
+        @ok="updateDueDate">
       </calendar>
     </dropdown>
   </div>
@@ -85,7 +87,8 @@ export default {
       due_date: [],
       showCalendar: false,
       calendarTop: 0,
-      calendarLeft: 0
+      calendarLeft: 0,
+      selectedDate: []
     }
   },
   methods: {
@@ -112,8 +115,12 @@ export default {
       this.calendarLeft = e.target.offsetLeft - 158
       this.calendarTop = e.target.offsetTop + 28
     },
-    updateDueDate (val) {
-      this.due_date = val
+    selectDate (val) {
+      this.selectedDate = val
+    },
+    updateDueDate () {
+      this.due_date = this.selectedDate
+      this.showCalendar = false
     },
     zeroPad(n){
       return String(n < 10 ? '0' + n : n)

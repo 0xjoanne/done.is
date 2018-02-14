@@ -39,9 +39,11 @@
       :left="calendarLeft"
       :top="calendarTop">
       <calendar
-        :value="task.due_date"
+        :value.sync="task.due_date"
         :zero="true"
-        @select="updateDueDate">
+        @select="selectDate"
+        @clear="showCalendar = false"
+        @ok="updateDueDate">
       </calendar>
     </dropdown>
 
@@ -137,6 +139,7 @@ export default {
       showCalendar: false,
       calendarTop: 0,
       calendarLeft: 0,
+      selectedDate: [],
       subtaskInput: '',
       descOptions: {
         spellcheck: false,
@@ -177,8 +180,12 @@ export default {
       this.calendarLeft = e.target.offsetLeft - 158
       this.calendarTop = e.target.offsetTop + 28
     },
-    updateDueDate (val) {
-      this.task.due_date = val
+    selectDate (val) {
+      this.selectedDate = val
+    },
+    updateDueDate () {
+      this.task.due_date = this.selectedDate
+      this.showCalendar = false
     },
     preventEnter (e) {
       if (e.keyCode === 13) {

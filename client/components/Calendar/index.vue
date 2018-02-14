@@ -53,14 +53,16 @@
     <div class="calendar-footer">
       <el-button
         size="medium"
-        class="button--default">
+        class="button--default"
+        @click="clear">
         Clear
       </el-button>
 
       <el-button
         size="medium"
         type="primary"
-        class="button--primary">
+        class="button--primary"
+        @click="ok">
         Ok
       </el-button>
     </div>
@@ -602,6 +604,13 @@ export default {
     zeroPad(n){
       return String(n < 10 ? '0' + n : n)
     },
+    clear () {
+      this.$emit('update:value', [])
+      this.$emit('clear')
+    },
+    ok () {
+      this.$emit('ok')
+    }
   }
 }
 </script>
@@ -818,7 +827,11 @@ export default {
 }
 
 .calendar-footer {
-  text-align: right;
-  margin: 20px 5px 20px 0;
+  text-align: center;
+  margin: 20px 5px 20px 5px;
+}
+
+.calendar-footer .el-button {
+  width: 135px;
 }
 </style>
