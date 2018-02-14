@@ -16,8 +16,7 @@
 
     <flex-box
       justify="flex-start"
-      class="task-input__preset"
-      :style="presetStyle">
+      class="task-input__preset">
       <flex-box class="task-input__preset-item">
         <i
           class="iconfont icon-calendar task-input__preset-icon"
@@ -78,10 +77,10 @@ export default {
     return {
       taskInput: '',
       placeholder: 'Add a task to "Inbox", press Enter to save',
-      presetStyle: {
-        height: '0px',
-        paddingBottom: '0px'
-      },
+      // presetStyle: {
+      //   height: '0px',
+      //   paddingBottom: '0px'
+      // },
       listId: '',
       priority: '4',
       due_date: [],
@@ -94,18 +93,16 @@ export default {
   methods: {
     formatdate,
     hideTaskPreset (e) {
-      this.$store.commit('SETTASKINPUTEXPANSION', false)
-      this.presetStyle = {
-        height: '0px',
-        paddingBottom: '0px'
-      }
+      // this.presetStyle = {
+      //   height: '0px',
+      //   paddingBottom: '0px'
+      // }
     },
     showTaskPreset () {
-      this.presetStyle = {
-        height: '46px',
-        paddingBottom: '10px'
-      }
-      this.$store.commit('SETTASKINPUTEXPANSION', true)
+      // this.presetStyle = {
+      //   height: '46px',
+      //   paddingBottom: '10px'
+      // }
     },
     getListTitle (title) {
       this.$store.commit('SETINPUTLISTTITLE', title)
@@ -199,6 +196,8 @@ export default {
   padding: 0 0 20px 60px;
   overflow: hidden;
   transition: all .3s;
+  height: 46px;
+  padding-bottom: 10px;
 }
 
 .task-input__preset .iconfont {
