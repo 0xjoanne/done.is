@@ -34,6 +34,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   color: #434654;
+  overflow: hidden;
 }
 
 /* reusable style */

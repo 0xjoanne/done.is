@@ -40,7 +40,11 @@
       @visible-change="handleVisibleChange"
       v-show="dropdownIconVisible || dropdownVisible"
       @command="handleCommand">
-      <i class="el-icon-more"></i>
+      <i
+        class="el-icon-more"
+        @click="openDropdown">
+      </i>
+      
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="edit">
           Edit
@@ -90,6 +94,9 @@ export default {
     mouseleaveListItem () {
       this.lengthVisible = true
       this.dropdownIconVisible = false
+    },
+    openDropdown (e) {
+      e.stopPropagation()
     },
     handleVisibleChange (show) {
       this.dropdownVisible = show

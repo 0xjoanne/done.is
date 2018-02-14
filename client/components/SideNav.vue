@@ -166,6 +166,7 @@ export default {
       this.$store.commit('SETNAVTITLE', title)
       this.$store.commit('SETNAVID', id)
       this.$store.commit('SETDETAILSVISIBILITY', false)
+      this.$store.commit('SETTASK', {})
     },
     addList () {
       this.$emit('add-list')
