@@ -114,12 +114,14 @@ body {
   transition: all .3s;
 }
 
-.btn--red.el-button:hover {
+.btn--red.el-button:hover,
+.btn--red.el-button:focus {
   color: white;
   background: #FF6656;
 }
 
 div.el-message {
+  border: none !important;
   padding: 20px;
   min-width: inherit;
   border-radius: 2px;
@@ -127,8 +129,11 @@ div.el-message {
 }
 
 .el-message--success {
-  border: none !important;
   background-color: rgba(91, 195, 162, 0.9) !important;
+}
+
+.el-message--error {
+  background-color: rgba(230, 38, 61, 0.9) !important;
 }
 
 .el-message__icon,
