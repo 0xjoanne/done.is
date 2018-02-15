@@ -27,7 +27,8 @@
               </el-form-item>
 
               <el-button
-                class="btn--red login__btn">
+                class="btn--red login__btn"
+                @click="login">
                 SIGN IN
               </el-button>
 
@@ -65,7 +66,8 @@
               </el-form-item>
 
               <el-button
-                class="btn--red">
+                class="btn--red"
+                @click="signup">
                 SIGN UP
               </el-button>
             </el-form>
@@ -98,6 +100,55 @@ export default {
         psw: '',
         agreeTerm: true
       }
+    }
+  },
+  methods: {
+    async login () {
+      const { data } = await this.axios.post('http://localhost:7001/user/login', {
+        email: this.loginForm.email,
+        password: this.loginForm.psw
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$store.commit('SETUSERID', data.data)
+        localStorage.setItem('userId', data.data)
+        this.$router.replace('/')
+      }
+    },
+    async signup () {
+      if (this.signupForm.agreeTerm) {
+        const { data } = await this.axios.post('http://localhost:7001/user/create', {
+          name: this.signupForm.name,
+          email: this.signupForm.email,
+          password: this.signupForm.psw
+        })
+
+        if (data.error !== 0) {
+          if (data.msg.errors[0].message === 'email must be unique') {
+            this.$message({
+              type: 'error',
+              message: 'The email is token.'
+            })
+          }
+        } else {
+          this.$store.commit('SETUSERID', data.data.id)
+          localStorage.setItem('userId', data.data.id)
+          this.$router.replace('/')
+        }
+      } else {
+        console.log("don't agree term")
+      }
+    }
+  },
+  created () {
+    const userId = localStorage.getItem('userId')
+    if (userId) {
+      this.$router.replace('/')
     }
   }
 }
