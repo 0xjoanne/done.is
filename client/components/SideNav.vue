@@ -112,56 +112,23 @@ export default {
         num: 0,
         icon: 'trash'
       }],
-      lists: [{
-        id: '7',
-        title: 'Test',
-        index: 1,
-        color: '#1890FF',
-        tasks: [{
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }]
-      }, {
-        id: '8',
-        title: 'Work',
-        index: 3,
-        color: '#FFD422',
-        tasks: [{
-          title: '测试1'
-        }]
-      }, {
-        id: '9',
-        title: 'Happy',
-        index: 5,
-        color: '',
-        tasks: []
-      }, {
-        id: '10',
-        title: 'Life',
-        index: 7,
-        color: '#FF67A6',
-        tasks: [{
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }]
-      }]
+      lists: []
     }
   },
   methods: {
+    async getGroupList () {
+      const userId = localStorage.getItem('userId')
+      const { data } = await this.axios.get('http://localhost:7001/group/list?userid=' + userId)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.lists = data.data
+      }
+    },
     onClickNav (title, id) {
       this.$store.commit('SETNAVTITLE', title)
       this.$store.commit('SETNAVID', id)
@@ -180,7 +147,13 @@ export default {
   },
   computed: mapState({
     activeNavId: state => state.navId
-  })
+  }),
+  async created () {
+    this.$bus.$on('get-group-list', async () => {
+      await this.getGroupList()
+    })
+    await this.getGroupList()
+  }
 }
 </script>
 

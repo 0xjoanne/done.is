@@ -54,7 +54,8 @@ export default {
       addListForm: {},
       editListDialogVisible: false,
       editListForm: {},
-      editingList: null
+      editingList: null,
+      editingListColor: ''
     }
   },
   methods: {
@@ -65,11 +66,27 @@ export default {
         color: ''
       }
     },
-    saveAddList () {
-      this.$message({
-        type: 'success',
-        message: 'Added successfully!'
+    async saveAddList () {
+      const userId = localStorage.getItem('userId')
+
+      const { data } = await this.axios.post('http://localhost:7001/group/create', {
+        title: this.addListForm.title,
+        color: this.addListForm.color,
+        created_by: userId
       })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-group-list')
+        this.$message({
+          type: 'success',
+          message: 'Added successfully!'
+        })
+      }
     },
     editList (list) {
       this.editListDialogVisible = true
@@ -78,14 +95,33 @@ export default {
         color: list.color
       }
       this.editingList = list
+      this.editingListColor = list.color
     },
-    saveEditList () {
-      this.editingList.title = this.editListForm.title
-      this.editingList.color = this.editListForm.color
-      this.$message({
-        type: 'success',
-        message: 'Edited successfully!'
+    async saveEditList () {
+      const groupid = this.editingList.id
+
+      const { data } = await this.axios.put('http://localhost:7001/group/' + groupid, {
+        title: this.editListForm.title,
+        color: this.editListForm.color
       })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-group-list')
+
+        if (this.editListForm.color !== this.editingListColor) {
+          this.$bus.$emit('get-task-list')
+        }
+
+        this.$message({
+          type: 'success',
+          message: 'Edited successfully!'
+        })
+      }
     }
   }
 }

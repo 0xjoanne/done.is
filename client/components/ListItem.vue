@@ -27,11 +27,11 @@
       </span>
     </flex-box>
 
-    <div
+    <!-- <div
       v-if="item.tasks.length !== 0 && lengthVisible && !dropdownVisible"
       class="list-item__num">
       {{ item.tasks.length }}
-    </div>
+    </div> -->
 
     <el-dropdown
       trigger="click"
@@ -44,7 +44,7 @@
         class="el-icon-more"
         @click="openDropdown">
       </i>
-      
+
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="edit">
           Edit
@@ -133,13 +133,26 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
+        this.confirmDelete()
+      }).catch(() => {
+
+      })
+    },
+    async confirmDelete () {
+      const { data } = await this.axios.delete('http://localhost:7001/group/' + this.item.id)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-group-list')
         this.$message({
           type: 'success',
           message: 'Deleted successfully!'
         })
-      }).catch(() => {
-
-      })
+      }
     }
   }
 }
