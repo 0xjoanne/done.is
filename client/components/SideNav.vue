@@ -118,7 +118,7 @@ export default {
   methods: {
     async getGroupList () {
       const userId = localStorage.getItem('userId')
-      const { data } = await this.axios.get('http://localhost:7001/group/list?userid=' + userId)
+      const { data } = await this.axios.get('/group/list?userid=' + userId)
 
       if (data.error !== 0) {
         this.$message({
@@ -134,6 +134,7 @@ export default {
       this.$store.commit('SETNAVID', id)
       this.$store.commit('SETDETAILSVISIBILITY', false)
       this.$store.commit('SETTASK', {})
+      this.$bus.$emit('get-task-list')
     },
     addList () {
       this.$emit('add-list')
