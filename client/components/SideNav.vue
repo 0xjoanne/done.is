@@ -6,7 +6,7 @@
     <nav-item
       v-for="(item, index) in navs"
       v-if="index < 4"
-      :key="index"
+      :key="item.id"
       :icon="item.icon"
       :label="item.title"
       :num="item.num"
@@ -33,8 +33,8 @@
 
       <draggable v-model="lists" @end="onEndDrag" v-if="lists.length">
         <list-item
-          v-for="(item, index) in lists"
-          :key="index"
+          v-for="item in lists"
+          :key="item.id"
           :item="item"
           @edit-list="editList"
           :is-active="activeNavId === item.id"
@@ -54,7 +54,7 @@
     <nav-item
       v-for="(item, index) in navs"
       v-if="index > 3"
-      :key="index"
+      :key="item.id"
       :icon="item.icon"
       :label="item.title"
       :num="item.num"

@@ -6,8 +6,8 @@
     </i>
 
     <div
-      v-for="(item, index) in color"
-      :key="index"
+      v-for="item in color"
+      :key="item"
       :class="['color', { 'checked' : value === item }]"
       :style="{ background: item }"
       @click="checkColor(item)">

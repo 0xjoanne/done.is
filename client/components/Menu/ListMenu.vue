@@ -26,8 +26,8 @@
         </el-dropdown-item>
 
         <el-dropdown-item
-          v-for="(item, index) in lists"
-          :key="index"
+          v-for="item in lists"
+          :key="item.id"
           :command="item"
           :class="['list-menu__item', { 'active' : currentListId === item.id }]">
           <i class="iconfont icon-menu list-menu__item-icon"></i>
