@@ -5,7 +5,7 @@
     <i class="iconfont icon-drag-vertical subtask-item__drag subtask-item__icon"></i>
 
     <el-checkbox
-      v-model="subtask.completed"
+      v-model="subtask.is_done"
       class="subtask-item__checker">
     </el-checkbox>
 

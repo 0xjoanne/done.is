@@ -45,9 +45,11 @@ export default {
   },
   methods: {
     hideSearch () {
-      this.searchStyle = {
-        width: '0px',
-        marginLeft: '0px'
+      if (!this.searchInput.length) {
+        this.searchStyle = {
+          width: '0px',
+          marginLeft: '0px'
+        }
       }
     },
     showSearch () {
