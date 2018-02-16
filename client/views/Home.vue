@@ -98,9 +98,9 @@ export default {
       this.editingListColor = list.color
     },
     async saveEditList () {
-      const groupid = this.editingList.id
+      const groupId = this.editingList.id
 
-      const { data } = await this.axios.put('http://localhost:7001/group/' + groupid, {
+      const { data } = await this.axios.put('http://localhost:7001/group/' + groupId, {
         title: this.editListForm.title,
         color: this.editListForm.color
       })
