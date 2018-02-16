@@ -139,7 +139,7 @@ export default {
       })
     },
     async confirmDelete () {
-      const { data } = await this.axios.delete('http://localhost:7001/group/' + this.item.id)
+      const { data } = await this.axios.delete('/group/' + this.item.id)
 
       if (data.error !== 0) {
         this.$message({

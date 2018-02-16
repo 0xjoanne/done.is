@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async login () {
-      const { data } = await this.axios.post('http://localhost:7001/user/login', {
+      const { data } = await this.axios.post('/user/login', {
         email: this.loginForm.email,
         password: this.loginForm.psw
       })
@@ -122,7 +122,7 @@ export default {
     },
     async signup () {
       if (this.signupForm.agreeTerm) {
-        const { data } = await this.axios.post('http://localhost:7001/user/create', {
+        const { data } = await this.axios.post('/user/create', {
           name: this.signupForm.name,
           email: this.signupForm.email,
           password: this.signupForm.psw

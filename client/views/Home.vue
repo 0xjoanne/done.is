@@ -69,7 +69,7 @@ export default {
     async saveAddList () {
       const userId = localStorage.getItem('userId')
 
-      const { data } = await this.axios.post('http://localhost:7001/group/create', {
+      const { data } = await this.axios.post('/group/create', {
         title: this.addListForm.title,
         color: this.addListForm.color,
         created_by: userId
@@ -100,7 +100,7 @@ export default {
     async saveEditList () {
       const groupId = this.editingList.id
 
-      const { data } = await this.axios.put('http://localhost:7001/group/' + groupId, {
+      const { data } = await this.axios.put('/group/' + groupId, {
         title: this.editListForm.title,
         color: this.editListForm.color
       })
