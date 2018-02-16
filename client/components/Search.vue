@@ -12,7 +12,7 @@
       v-model="searchInput"
       class="search__input"
       :style="searchStyle"
-      @keyup.enter="search">
+      @input.native="search">
     </el-input>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
       this.$refs.taskSearch.focus()
     },
     search () {
-      console.log(this.searchInput)
+      this.$emit('search', this.searchInput)
     }
   }
 }
