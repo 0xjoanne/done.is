@@ -49,7 +49,9 @@ export default {
   },
   props: {
     currentListId: {
-      type: String,
+      validator: function (val) {
+        return val === null || typeof val === 'string'
+      },
       required: true
     },
     dropdownIconStyle: {
@@ -62,57 +64,15 @@ export default {
   },
   data () {
     return {
-      lists: [{
-        id: '7',
-        title: 'Test',
-        index: 1,
-        color: '#1890FF',
-        tasks: [{
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }]
-      }, {
-        id: '8',
-        title: 'Work',
-        index: 3,
-        color: '#FFD422',
-        tasks: [{
-          title: '测试1'
-        }]
-      }, {
-        id: '9',
-        title: 'Happy',
-        index: 5,
-        color: '',
-        tasks: []
-      }, {
-        id: '10',
-        title: 'Life',
-        index: 7,
-        color: '#FF67A6',
-        tasks: [{
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }, {
-          title: '测试2'
-        }, {
-          title: '测试1'
-        }]
-      }]
+      lists: []
     }
   },
   computed: {
     currentList () {
+      if (!this.lists.length) {
+        return "Inbox"
+      }
+
       if (this.currentListId) {
         let list = this.lists.filter(item => { return item.id === this.currentListId })
         return list[0].title
@@ -122,6 +82,20 @@ export default {
     }
   },
   methods: {
+    async getGroupList () {
+      const userId = localStorage.getItem('userId')
+      const { data } = await this.axios.get('/group/list?userid=' + userId)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.lists = data.data
+
+      }
+    },
     handleCommand (list) {
       if (list === 'Inbox') {
         this.$emit('update:currentListId', '')
@@ -131,6 +105,12 @@ export default {
         this.$emit('get-list-title', list.title)
       }
     }
+  },
+  async created () {
+    this.$bus.$on('get-group-list', async () => {
+      await this.getGroupList()
+    })
+    await this.getGroupList()
   }
 }
 </script>
