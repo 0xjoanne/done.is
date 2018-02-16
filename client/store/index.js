@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+  userId: '',
   task: {},
   detailsVisibility: false,
   navTitle: 'Inbox',
@@ -12,6 +13,9 @@ const state = {
 }
 
 const mutations = {
+  SETUSERID (state, id) {
+    state.userId = id
+  },
   SETTASK (state, task) {
     state.task = task
   },
