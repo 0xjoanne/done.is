@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="priority-menu">
     <el-dropdown
       trigger="click"
       placement="bottom"
@@ -105,8 +105,12 @@ export default {
 </script>
 
 <style>
-.priority-menu__icon {
+.priority-menu {
   cursor: pointer;
+}
+
+.priority-menu__icon {
+
   font-size: 18px;
 }
 

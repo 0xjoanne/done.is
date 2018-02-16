@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-menu">
     <el-dropdown
       trigger="click"
       placement="bottom"
@@ -117,8 +117,11 @@ export default {
 </script>
 
 <style>
-.list-menu__icon {
+.list-menu {
   cursor: pointer;
+}
+
+.list-menu__icon {
   font-size: 18px;
 }
 
