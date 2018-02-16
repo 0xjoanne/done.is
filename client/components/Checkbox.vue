@@ -26,8 +26,8 @@ export default {
       required: true
     },
     priorityId: {
-      type: String,
-      default: '4'
+      type: Number,
+      default: 4
     },
     activePriorityColor: {
       type: Boolean,
@@ -42,6 +42,7 @@ export default {
   methods: {
     toggleStatus () {
       this.$emit('update:completed', !this.completed)
+      this.$emit('toggle-status')
     }
   },
   computed: {

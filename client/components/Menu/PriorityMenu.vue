@@ -71,7 +71,7 @@ export default {
   },
   props: {
     currentPriorityId: {
-      type: String,
+      type: Number,
       required: true
     },
     dropdownIconStyle: {
@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     handleCommand (priority) {
-      this.$emit('update:currentPriorityId', priority)
+      this.$emit('update:currentPriorityId', parseInt(priority))
     }
   }
 }

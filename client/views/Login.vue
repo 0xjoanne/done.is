@@ -129,7 +129,7 @@ export default {
         })
 
         if (data.error !== 0) {
-          if (data.msg.errors[0].message === 'email must be unique') {
+          if (data.msg === 'email must be unique') {
             this.$message({
               type: 'error',
               message: 'The email is token.'
