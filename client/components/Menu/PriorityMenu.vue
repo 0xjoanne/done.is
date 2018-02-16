@@ -98,6 +98,7 @@ export default {
   },
   methods: {
     handleCommand (priority) {
+      this.$emit('update-priority', parseInt(priority))
       this.$emit('update:currentPriorityId', parseInt(priority))
     }
   }

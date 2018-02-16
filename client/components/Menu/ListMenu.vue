@@ -98,6 +98,7 @@ export default {
       }
     },
     handleCommand (list) {
+      this.$emit('update-list', list)
       if (list === 'Inbox') {
         this.$emit('update:currentListId', '')
         this.$emit('get-list-title', 'Inbox')
