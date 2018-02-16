@@ -126,3 +126,7 @@ const checkExpiry = function (date) {
     return false
   }
 }
+
+export const zeroPad = function (n) {
+  return String(n < 10 ? '0' + n : n)
+}
