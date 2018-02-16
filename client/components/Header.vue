@@ -13,7 +13,9 @@
         </el-badge>
       </div> -->
 
-      <el-dropdown trigger="click">
+      <el-dropdown
+        trigger="click"
+        @command="handleCommand">
         <div class="header__profile cursor--pointer">
           <img
             src="https://timgsa.baidu.com/timg?image&quality=100&size=b9999_10000&sec=1510278897&di=a158da35f8b26f484be5619830d8726e&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ae2958ae3c46a801219c774d7171.jpg%40900w_1l_2o_100sh.jpg"
@@ -22,11 +24,12 @@
         </div>
 
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <el-dropdown-item command="settings">
             <i class="iconfont icon-setting header__profile-icon"></i>
             <span>Settings</span>
           </el-dropdown-item>
-          <el-dropdown-item>
+
+          <el-dropdown-item command="logout">
             <i class="iconfont icon-logout header__profile-icon"></i>
             <span>Log out</span>
           </el-dropdown-item>
@@ -48,6 +51,16 @@ export default {
     return {
       msgNum: 12,
       addInput: ''
+    }
+  },
+  methods: {
+    handleCommand (command) {
+      if (command === 'settings') {
+
+      } else if (command === 'logout') {
+        localStorage.setItem('userId', '')
+        this.$router.replace('/login')
+      }
     }
   },
   computed: mapState({
