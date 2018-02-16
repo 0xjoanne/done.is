@@ -21,72 +21,107 @@ moment.updateLocale('en', {
 })
 
 export const formatdate = function (value) {
-  if (value.length) {
-    // format value as YYYYMMDD
-    let date = value.join('')
+  let type = typeof value
 
-    let now = moment().startOf('date')
-    let diff = moment(date).diff(now, 'days')
-
-    let md = moment(date).format('MMM D') // month + day, eg., Feb 2
-
-    if ( diff > 7 || diff < -1 ) {
-      return moment(date).startOf('day').fromNow() + ', ' + md
-    } else if (diff === 0) {
-      return 'Today, ' + md
-    } else if (diff === -1) {
-      return 'Yesterday, ' + md
-    } else if (diff === 1) {
-      return 'Tomorrow, ' + md
-    }  else {
-      return moment(date).format('ddd') + ', ' + md
+  if (Array.isArray(value)) {
+    if (value.length) {
+      // format value as YYYYMMDD
+      let date = value.join('')
+      return getDateString(date)
+    } else {
+      return "No due date"
     }
   } else {
-    return "No due date"
+    if (type === 'string') {
+      return getDateString(value)
+    } else if (type === 'object') {
+      return "No due date"
+    }
+  }
+}
+
+const getDateString = function (date) {
+  let now = moment().startOf('date')
+  let diff = moment(date).diff(now, 'days')
+
+  let md = moment(date).format('MMM D') // month + day, eg., Feb 2
+
+  if ( diff > 7 || diff < -1 ) {
+    return moment(date).startOf('day').fromNow() + ', ' + md
+  } else if (diff === 0) {
+    return 'Today, ' + md
+  } else if (diff === -1) {
+    return 'Yesterday, ' + md
+  } else if (diff === 1) {
+    return 'Tomorrow, ' + md
+  }  else {
+    return moment(date).format('ddd') + ', ' + md
   }
 }
 
 export const formatshortdate = function (value) {
-  if (value.length) {
-    // format value as YYYYMMDD
-    let date = value.join('')
+  let type = typeof value
 
-    let now = moment().startOf('date')
-    let diff = moment(date).diff(now, 'days')
+  if (Array.isArray(value)) {
+    if (value.length) {
+      // format value as YYYYMMDD
+      let date = value.join('')
 
-    let md = moment(date).format('MMM D')
-
-    switch (diff) {
-      case 0:
-        return 'Today'
-        break;
-      case -1:
-        return 'Yesterday'
-        break;
-      case 1:
-        return 'Tomorrow'
-        break;
-      default:
-        return md
+      return getShortDateString(date)
+    } else {
+      return ""
     }
   } else {
-    return ""
+    if (type === 'string'){
+      return getShortDateString(value)
+    }
+  }
+}
+
+const getShortDateString = function (date) {
+  let now = moment().startOf('date')
+  let diff = moment(date).diff(now, 'days')
+
+  let md = moment(date).format('MMM D')
+
+  switch (diff) {
+    case 0:
+      return 'Today'
+      break;
+    case -1:
+      return 'Yesterday'
+      break;
+    case 1:
+      return 'Tomorrow'
+      break;
+    default:
+      return md
   }
 }
 
 export const isexpired = function (value) {
-  if (value.length) {
-    // format value as YYYYMMDD
-    let date = value.join('')
+  let type = typeof value
 
-    let now = moment().startOf('date')
-    let diff = moment(date).diff(now, 'days')
+  if (type === 'array') {
+    if (value.length) {
+      // format value as YYYYMMDD
+      let date = value.join('')
 
-    if (diff < 0) {
-      return true
+      return checkExpiry(date)
     } else {
       return false
     }
+  } else if (type === 'string') {
+    return checkExpiry(value)
+  }
+}
+
+const checkExpiry = function (date) {
+  let now = moment().startOf('date')
+  let diff = moment(date).diff(now, 'days')
+
+  if (diff < 0) {
+    return true
   } else {
     return false
   }
