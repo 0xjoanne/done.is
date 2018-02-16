@@ -27,20 +27,20 @@ export const formatdate = function (value) {
     if (value.length) {
       // format value as YYYYMMDD
       let date = value.join('')
-      return getDateString(date)
+      return getStringDate(date)
     } else {
       return "No due date"
     }
   } else {
     if (type === 'string') {
-      return getDateString(value)
+      return getStringDate(value)
     } else if (type === 'object') {
       return "No due date"
     }
   }
 }
 
-const getDateString = function (date) {
+const getStringDate = function (date) {
   let now = moment().startOf('date')
   let diff = moment(date).diff(now, 'days')
 
@@ -67,18 +67,18 @@ export const formatshortdate = function (value) {
       // format value as YYYYMMDD
       let date = value.join('')
 
-      return getShortDateString(date)
+      return getStringShortDate(date)
     } else {
       return ""
     }
   } else {
     if (type === 'string'){
-      return getShortDateString(value)
+      return getStringShortDate(value)
     }
   }
 }
 
-const getShortDateString = function (date) {
+const getStringShortDate = function (date) {
   let now = moment().startOf('date')
   let diff = moment(date).diff(now, 'days')
 
@@ -129,4 +129,12 @@ const checkExpiry = function (date) {
 
 export const zeroPad = function (n) {
   return String(n < 10 ? '0' + n : n)
+}
+
+export const getArrayDate = function (value) {
+  return [
+    moment(value).year(),
+    zeroPad(moment(value).month() + 1),
+    zeroPad(moment(value).date())
+  ]
 }
