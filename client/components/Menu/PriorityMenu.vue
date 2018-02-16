@@ -1,13 +1,21 @@
 <template>
-  <flex-box justify="flex-start">
+  <div>
     <el-dropdown
       trigger="click"
       placement="bottom"
       @command="handleCommand">
-      <i
-        class="iconfont icon-important priority-menu__icon"
-        :style="dropdownIconStyle">
-      </i>
+      <flex-box>
+        <i
+          class="iconfont icon-important priority-menu__icon"
+          :style="dropdownIconStyle">
+        </i>
+
+        <span
+          v-if="labelVisible"
+          class="priority-menu__label">
+          {{ currentPriority }}
+        </span>
+      </flex-box>
 
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -39,14 +47,7 @@
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
-
-    <span
-      v-if="labelVisible"
-      class="priority-menu__label">
-      {{ currentPriority }}
-    </span>
-  </flex-box>
-
+  </div>
 </template>
 
 <script>
