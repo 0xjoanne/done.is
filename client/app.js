@@ -7,10 +7,35 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import vClickOutside from 'v-click-outside'
 const Chance = require('chance')()
+import axios from 'axios'
 sync(store, router)
 
 Vue.use(ElementUI)
 Vue.use(vClickOutside)
+
+axios.defaults.baseURL = 'http://localhost:7001'
+if (process.env.NODE_ENV === 'prod') {
+  axios.defaults.baseURL = 'https://api.done.is'
+}
+
+Vue.mixin({
+  created () {
+    this.axios = axios
+  }
+})
+
+const bus = new Vue()
+
+Vue.mixin({
+  beforeCreate () {
+    this.$bus = bus
+  }
+})
+
+const userId = localStorage.getItem('userId')
+if (userId) {
+  router.replace('/login')
+}
 
 Vue.prototype.$sortable = function (e, array) {
   const newIndex = e.newIndex
