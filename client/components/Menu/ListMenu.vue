@@ -76,7 +76,11 @@ export default {
 
       if (this.currentListId) {
         let list = this.lists.filter(item => { return item.id === this.currentListId })
-        return list[0].title
+        if (list.length) {
+          return list[0].title
+        } else {
+          return 'Inbox'
+        }
       } else {
         return 'Inbox'
       }
