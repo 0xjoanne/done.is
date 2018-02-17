@@ -84,12 +84,12 @@ export default {
       navs: [{
         id: '1',
         title: 'Inbox',
-        num: 12,
+        num: 0,
         icon: 'inbox'
       }, {
         id: '2',
         title: 'Today',
-        num: 12,
+        num: 0,
         icon: 'activity'
       }, {
         id: '3',
@@ -129,6 +129,23 @@ export default {
         this.lists = data.data
       }
     },
+    async getItemSummary () {
+      const userId = localStorage.getItem('userId')
+      const { data } = await this.axios.get('/item/summary?userid=' + userId)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        let count = data.data
+        this.navs[0].num = count.inbox
+        this.navs[1].num = count.today
+        this.navs[2].num = count.next
+        this.navs[3].num = count.done
+      }
+    },
     onClickNav (title, id) {
       this.$store.commit('SETNAVTITLE', title)
       this.$store.commit('SETNAVID', id)
@@ -154,6 +171,11 @@ export default {
       await this.getGroupList()
     })
     await this.getGroupList()
+
+    this.$bus.$on('get-item-summary', async () => {
+      await this.getItemSummary()
+    })
+    await this.getItemSummary()
   }
 }
 </script>
