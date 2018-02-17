@@ -119,13 +119,27 @@ export default {
         cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
+        this.confirmArchive()
+      }).catch(() => {
+
+      })
+    },
+    async confirmArchive () {
+      const { data } = await this.axios.put('/group/' + this.item.id + '/archive')
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-group-list')
+        this.$bus.$emit('get-task-list')
         this.$message({
           type: 'success',
           message: 'Archived successfully!'
         })
-      }).catch(() => {
-
-      })
+      }
     },
     deleteList () {
       this.$confirm('All tasks of this list will be deleted. Are you sure you want to delete "' + this.item.title + '"?', 'Delete List', {
@@ -148,6 +162,7 @@ export default {
         })
       } else {
         this.$bus.$emit('get-group-list')
+        this.$bus.$emit('get-task-list')
         this.$message({
           type: 'success',
           message: 'Deleted successfully!'
