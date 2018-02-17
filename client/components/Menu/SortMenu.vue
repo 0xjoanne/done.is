@@ -41,6 +41,7 @@ export default {
   methods: {
     handleCommand (order) {
       this.$emit('update:currentOrder', order)
+      this.$emit('update-order')
     }
   }
 }
