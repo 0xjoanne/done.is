@@ -37,20 +37,23 @@ if (userId) {
   router.replace('/login')
 }
 
-Vue.prototype.$sortable = function (e, array) {
+Vue.prototype.$sortable = function (e, array, name) {
   const newIndex = e.newIndex
   const currentItem = array[newIndex]
 
   if (newIndex === 0) {
-    const next = array[newIndex + 1].index
-    currentItem.index = Chance.floating({min: -9999, max: next, fixed: 8})
+    const next = array[newIndex + 1].order
+    currentItem.order = Chance.floating({min: -9999, max: next, fixed: 8})
+    this.$bus.$emit('update-' + name + '-order', currentItem)
   } else if (newIndex !== array.length - 1) {
-    const prev = array[newIndex - 1].index
-    const next = array[newIndex + 1].index
-    currentItem.index = Chance.floating({min: prev, max: next, fixed: 8})
+    const prev = array[newIndex - 1].order
+    const next = array[newIndex + 1].order
+    currentItem.order = Chance.floating({min: prev, max: next, fixed: 8})
+    this.$bus.$emit('update-' + name + '-order', currentItem)
   } else {
-    const prev = array[newIndex - 1].index
-    currentItem.index = Chance.floating({min: prev, max: prev + 9999, fixed: 8})
+    const prev = array[newIndex - 1].order
+    currentItem.order = Chance.floating({min: prev, max: prev + 9999, fixed: 8})
+    this.$bus.$emit('update-' + name + '-order', currentItem)
   }
 }
 
