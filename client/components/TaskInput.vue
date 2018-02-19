@@ -6,9 +6,11 @@
       <!-- start with = to create multiple task -->
       <el-input
         :placeholder="placeholder"
-        v-model="taskInput"
+        v-model="taskTitle"
+        :maxlength="30"
         class="task-input"
-        @focus="showTaskPreset">
+        @focus="showTaskPreset"
+        @keyup.enter.native="addTask">
       </el-input>
 
       <i class="iconfont icon-arrow-right task-input__title-icon"></i>
@@ -17,13 +19,15 @@
     <flex-box
       justify="flex-start"
       class="task-input__preset">
-      <flex-box class="task-input__preset-item">
+      <flex-box
+        class="task-input__preset-item"
+        @click.native="toggleCalendar">
         <i
-          class="iconfont icon-calendar task-input__preset-icon"
-          @click="toggleCalendar">
+          class="iconfont icon-calendar task-input__preset-icon">
         </i>
 
-        <span class="task-input__preset-label">
+        <span
+          class="task-input__preset-label">
           {{ formatdate(due_date) }}
         </span>
       </flex-box>
@@ -62,7 +66,7 @@ import PriorityMenu from 'components/Menu/PriorityMenu'
 import Dropdown from 'components/Dropdown'
 import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
-import { formatdate } from 'libs/formatdate'
+import { formatdate, zeroPad } from 'libs/formatdate'
 import moment from 'moment'
 
 export default {
@@ -75,14 +79,14 @@ export default {
   },
   data () {
     return {
-      taskInput: '',
+      taskTitle: '',
       placeholder: 'Add a task to "Inbox", press Enter to save',
       // presetStyle: {
       //   height: '0px',
       //   paddingBottom: '0px'
       // },
       listId: '',
-      priority: '4',
+      priority: 4,
       due_date: [],
       showCalendar: false,
       calendarTop: 0,
@@ -92,6 +96,7 @@ export default {
   },
   methods: {
     formatdate,
+    zeroPad,
     hideTaskPreset (e) {
       // this.presetStyle = {
       //   height: '0px',
@@ -116,11 +121,58 @@ export default {
       this.selectedDate = val
     },
     updateDueDate () {
-      this.due_date = this.selectedDate
+      if (this.selectedDate.length) {
+        this.due_date = this.selectedDate
+      } else {
+        this.due_date = [
+          moment().year(),
+          this.zeroPad(moment().month() + 1),
+          this.zeroPad(moment().date())
+        ]
+      }
       this.showCalendar = false
     },
-    zeroPad(n){
-      return String(n < 10 ? '0' + n : n)
+    async addTask () {
+      if (!this.taskTitle) {
+        return
+      }
+
+      const userId = localStorage.getItem('userId')
+
+      let due_date = null
+      if (this.due_date.length) {
+        due_date = this.due_date.join('-')
+      }
+
+      const { data } = await this.axios.post('/item/create', {
+        title: this.taskTitle,
+        created_by: userId,
+        due_date: due_date,
+        group_id: this.listId || null,
+        priority: this.priority
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        // update task list
+        this.$bus.$emit('get-task-list')
+        this.$bus.$emit('get-item-summary')
+
+        this.$message({
+          type: 'success',
+          message: 'Added successfully!'
+        })
+
+        // reset task input
+        this.taskTitle = ''
+        this.due_date = []
+        this.listId = ''
+        this.priority = 4
+      }
     }
   },
   computed: {
@@ -145,14 +197,21 @@ export default {
           this.zeroPad(moment().month() + 1),
           this.zeroPad(moment().date())
         ]
+
+        this.placeholder = 'Add a task to "Inbox" on "Today", press Enter to save'
       } else {
         this.due_date = []
       }
+
     },
     activeNavTitle: function (newValue, oldValue) {
       let index = ['1', '2', '3', '4'].indexOf(this.activeNavId)
       if (index > -1) {
-        this.placeholder = 'Add a task to "Inbox", press Enter to save'
+        if (this.activeNavId === '2') {
+          this.placeholder = 'Add a task to "Inbox" on "Today", press Enter to save'
+        } else {
+          this.placeholder = 'Add a task to "Inbox", press Enter to save'
+        }
       } else {
         this.placeholder = 'Add a task to "' + newValue + '", press Enter to save'
       }
@@ -210,7 +269,6 @@ export default {
 
 .task-input__preset-icon {
   margin-right: 8px;
-  cursor: pointer;
 }
 
 .task-input__action-icon:hover {
