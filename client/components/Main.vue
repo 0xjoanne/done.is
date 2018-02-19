@@ -5,12 +5,17 @@
         <flex-box
           justify="flex-end"
           class="main-content__action-bar">
-          <search v-if="activeNavId !== '6'"></search>
+          <search
+            v-if="activeNavId !== '6'"
+            @search="getTasks"
+            class="main-content__search">
+          </search>
 
           <sort-menu
             :currentOrder.sync="currentOrder"
             class="main-content__sort-menu"
-            v-if="activeNavId !== '6'">
+            v-if="activeNavId !== '6' && activeNavId !== '5'"
+            @update-order="getTasks">
           </sort-menu>
 
           <i
@@ -21,16 +26,15 @@
         </flex-box>
 
         <!-- task input  -->
-        <task-input v-if="activeNavId !== '5' && activeNavId !== '6'"></task-input>
+        <task-input v-show="activeNavId !== '5' && activeNavId !== '6'"></task-input>
 
         <!-- task list  -->
         <div
           v-if="tasks.length"
-          class="main-content__task-list"
-          :style="{ height: taskListHeight }">
+          class="main-content__task-list">
           <div
-            v-for="(item, index) in tasks"
-            :key="index">
+            v-for="item in tasks"
+            :key="item.id">
             <task-list
               :list="item"
               v-if="item.content.length">
@@ -73,6 +77,8 @@ import TaskList from 'components/TaskList'
 import EmptyTemplate from 'components/EmptyTemplate'
 import TaskDetails from 'components/TaskDetails'
 import { mapState } from 'vuex'
+import moment from 'moment'
+import { getArrayDate } from 'libs/formatdate'
 
 export default {
   components: {
@@ -88,124 +94,34 @@ export default {
     return {
       currentOrder: 'time',
       showDetails: false,
-      tasks: [{
-        title: 'TODAY',
-        content: [{
-          id: 1,
-          index: 1,
-          title: 'Test to do',
-          color: '#94D050',
-          created_at: 'Today',
-          due_date: [],
-          completed: false,
-          desc: '',
-          priority_id: '1',
-          group_id: '10',
-          subtasks: []
-        }, {
-          id: 2,
-          index: 2,
-          title: 'Hello world Hello world Hello world Hello world Hello world Hello world Hello world',
-          color: '#FFAC2A',
-          created_at: 'Yesterday',
-          due_date: [2018, '02', '11'],
-          completed: true,
-          desc: '',
-          priority_id: '4',
-          group_id: '',
-          subtasks: []
-        }, {
-          id: 3,
-          index: 3,
-          title: 'Hello world',
-          color: '#FFD422',
-          created_at: 'Feb 22',
-          due_date: [2018, '02', '22'],
-          completed: false,
-          desc: '',
-          priority_id: '2',
-          group_id: '',
-          subtasks: []
-        }]
-      }, {
-        title: 'YESTERDAY',
-        content: [{
-          id: 4,
-          index: 4,
-          title: 'Test to do',
-          color: '#1890FF',
-          created_at: 'Today',
-          due_date: [2018, '02', '12'],
-          completed: false,
-          desc: '',
-          priority_id: '3',
-          group_id: '',
-          subtasks: []
-        }, {
-          id: 5,
-          index: 5,
-          title: 'Hello world',
-          color: '#41D9C7',
-          created_at: 'Feb 22',
-          due_date: [2018, '02', '22'],
-          completed: false,
-          desc: '',
-          priority_id: '2',
-          group_id: '',
-          subtasks: []
-        }, {
-          id: 6,
-          index: 6,
-          title: 'Test to do',
-          color: '#A5C5C1',
-          created_at: 'Today',
-          due_date: [2018, '02', '12'],
-          completed: false,
-          desc: '',
-          priority_id: '4',
-          group_id: '',
-          subtasks: []
-        },{
-          id: 7,
-          index: 7,
-          title: 'Test to do',
-          color: '#BD988C',
-          created_at: 'Today',
-          due_date: [2018, '02', '12'],
-          completed: false,
-          desc: '',
-          priority_id: '4',
-          group_id: '',
-          subtasks: []
-        },{
-          id: 8,
-          index: 8,
-          title: 'Test to do',
-          color: '#FF67A6',
-          created_at: 'Today',
-          due_date: [2018, '02', '12'],
-          completed: false,
-          desc: '',
-          priority_id: '4',
-          group_id: '',
-          subtasks: []
-        }, {
-          id: 9,
-          index: 9,
-          title: 'Hello world',
-          color: '#8543E0',
-          created_at: 'Feb 22',
-          due_date: [2018, '02', '22'],
-          completed: false,
-          desc: '',
-          priority_id: '4',
-          group_id: '',
-          subtasks: []
-        }]
-      }]
+      tasks: []
     }
   },
   methods: {
+    async getTasksByOrder(order, search) {
+      this.tasks = []
+      const userId = localStorage.getItem('userId')
+      const { data } = await this.axios.get('/item/list?userid=' + userId + '&nav=' + this.activeNavId + '&order=' + order + '&title=' + search)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.tasks = data.data.map(task => {
+          task.due_date_array = task.due_date === null ? [] : getArrayDate(task.due_date)
+          return task
+        })
+      }
+    },
+    async getTasks(search = '') {
+      if (this.activeNavId !== '5') {
+        await this.getTasksByOrder(this.currentOrder, search)
+      } else {
+        await this.getTasksByOrder('list', search)
+      }
+    },
     cleanTrash () {
 
     }
@@ -214,16 +130,21 @@ export default {
     ...mapState({
       selectedTask: state => state.task,
       detailsVisibility: state => state.detailsVisibility,
-      activeNavId: state => state.navId,
-      taskInputExpansion: state => state.taskInputExpansion
+      activeNavId: state => state.navId
     }),
-    taskListHeight () {
-      if (this.taskInputExpansion) {
-        return 'calc(100vh - 231px)'
-      } else {
-        return 'calc(100vh - 185px)'
-      }
-    }
+    // taskListHeight () {
+    //   if (this.taskInputExpansion) {
+    //     return 'calc(100vh - 231px)'
+    //   } else {
+    //     return 'calc(100vh - 185px)'
+    //   }
+    // }
+  },
+  async created () {
+    this.$bus.$on('get-task-list', async () => {
+      await this.getTasks()
+    })
+    await this.getTasks()
   }
 }
 </script>
@@ -239,8 +160,9 @@ export default {
   border-bottom: 1px solid #fbfbfb;
 }
 
+.main-content__search,
 .main-content__sort-menu {
-  margin: 0 20px 0 15px;
+  margin-right: 20px;
 }
 
 .main-content__clean {
@@ -249,5 +171,6 @@ export default {
 
 .main-content__task-list {
   overflow: scroll;
+  height: calc(100vh - 231px);
 }
 </style>
