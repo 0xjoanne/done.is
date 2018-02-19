@@ -3,21 +3,23 @@
     <div class="task-details__header-container">
       <flex-box class="task-details__header">
         <checkbox
-          :completed.sync="task.completed"
-          :priority-id="task.priority_id"
+          :completed.sync="task.is_done"
+          :priority-id="task.priority"
           :activePriorityColor="false"
-          class="task-details__status">
+          class="task-details__status"
+          @toggle-status="updateDoneStatus">
         </checkbox>
 
         <flex-box
           justify="flex-start"
-          :class="['task-details__duedate', { expired : isexpired(task.due_date), none: task.due_date.length === 0 }]">
+          :class="['task-details__duedate', { expired : isexpired(task.due_date), none: typeof task.due_date === 'object' }]"
+          @click.native="toggleCalendar">
           <i
-            class="el-icon-date icon"
-            @click="toggleCalendar">
+            class="el-icon-date icon">
           </i>
 
-          <span class="task-details__duedate-label">
+          <span
+            class="task-details__duedate-label">
             {{ formatdate(task.due_date) }}
           </span>
         </flex-box>
@@ -39,10 +41,10 @@
       :left="calendarLeft"
       :top="calendarTop">
       <calendar
-        :value.sync="task.due_date"
+        :value.sync="task.due_date_array"
         :zero="true"
         @select="selectDate"
-        @clear="showCalendar = false"
+        @clear="clearDueDate"
         @ok="updateDueDate">
       </calendar>
     </dropdown>
@@ -56,7 +58,8 @@
           placeholder="What needs doing?"
           class="task-details__title"
           v-model="task.title"
-          @keydown.native="preventEnter">
+          @keydown.native="preventEnter"
+          @blur="updateTitle">
         </el-input>
 
         <flex-box
@@ -64,20 +67,23 @@
           class="task-details__tip">
           <list-menu
             :current-list-id.sync="task.group_id"
-            class="task-details__tip-item">
+            class="task-details__tip-item"
+            @update-list="updateList">
           </list-menu>
 
           <priority-menu
-            :current-priority-id.sync="task.priority_id"
-            class="task-details__tip-item">
+            :current-priority-id.sync="task.priority"
+            class="task-details__tip-item"
+            @update-priority="updatePriority">
           </priority-menu>
         </flex-box>
 
         <div class="task-details__desc-container">
           <medium-editor
-            :text='task.desc'
+            :text="task.desc"
             :options="descOptions"
-            class="task-details__desc">
+            class="task-details__desc"
+            @blur.native="updateDesc">
           </medium-editor>
         </div>
 
@@ -89,10 +95,10 @@
         </el-input>
       </div>
 
-      <draggable v-model="task.subtasks" @end="onEndDrag">
+      <draggable v-model="subtasks" @end="onEndDrag">
         <subtask-item
-          v-for="(item, index) in task.subtasks"
-          :key="index"
+          v-for="item in subtasks"
+          :key="item.id"
           :subtask="item">
         </subtask-item>
       </draggable>
@@ -112,7 +118,9 @@ import EditorExtension from 'libs/editor'
 import Dropdown from 'components/Dropdown'
 import Calendar from 'components/Calendar'
 import { mapState } from 'vuex'
-import { formatdate, isexpired } from 'libs/formatdate'
+import { formatdate, isexpired, zeroPad } from 'libs/formatdate'
+import moment from 'moment'
+import xss from 'xss'
 
 EditorExtension(MediumEditor)
 
@@ -136,6 +144,7 @@ export default {
   },
   data () {
     return {
+      subtasks: [],
       showCalendar: false,
       calendarTop: 0,
       calendarLeft: 0,
@@ -169,12 +178,45 @@ export default {
         },
         autoLink: true,
         targetBlank: true
-      }
+      },
     }
   },
   methods: {
     formatdate,
     isexpired,
+    zeroPad,
+    async updateDoneStatus () {
+      if (this.task.is_done) {
+        const { data } = await this.axios.put('/item/' + this.task.id, {
+          is_done: this.task.is_done,
+          done_at: new Date()
+        })
+
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        } else {
+          this.$bus.$emit('get-item-summary')
+        }
+      } else {
+        const { data } = await this.axios.put('/item/' + this.task.id, {
+          is_done: this.task.is_done,
+          done_at: null
+        })
+
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        } else {
+          this.$bus.$emit('get-item-summary')
+        }
+      }
+    },
+    // Calendar Events
     toggleCalendar (e) {
       this.showCalendar = !this.showCalendar
       this.calendarLeft = e.target.offsetLeft - 158
@@ -183,9 +225,86 @@ export default {
     selectDate (val) {
       this.selectedDate = val
     },
-    updateDueDate () {
-      this.task.due_date = this.selectedDate
+    async clearDueDate () {
+      this.task.due_date = []
+
+      const { data } = await this.axios.put('/item/' + this.task.id, {
+        due_date: null
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-task-list')
+        this.$bus.$emit('get-item-summary')
+      }
+
       this.showCalendar = false
+    },
+    async updateDueDate () {
+      if (this.selectedDate.length) {
+        // if user selects a date
+        this.task.due_date = this.selectedDate
+
+        const { data } = await this.axios.put('/item/' + this.task.id, {
+          due_date: this.task.due_date
+        })
+
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        } else {
+          this.$bus.$emit('get-task-list')
+          this.$bus.$emit('get-item-summary')
+        }
+      } else {
+        // without selecting, default TODAY
+        this.task.due_date = [
+          moment().year(),
+          this.zeroPad(moment().month() + 1),
+          this.zeroPad(moment().date())
+        ]
+
+        const { data } = await this.axios.put('/item/' + this.task.id, {
+          due_date: moment().startOf('date')
+        })
+
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        } else {
+          this.$bus.$emit('get-task-list')
+          this.$bus.$emit('get-item-summary')
+        }
+      }
+
+      this.showCalendar = false
+    },
+    async delTask () {
+      const { data } = await this.axios.delete('/item/' + this.task.id)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-task-list')
+        this.$bus.$emit('get-item-summary')
+        // hide task details
+        this.$store.commit('SETDETAILSVISIBILITY', false)
+        this.$message({
+          type: 'success',
+          message: 'Deleted successfully!'
+        })
+      }
     },
     preventEnter (e) {
       if (e.keyCode === 13) {
@@ -194,35 +313,136 @@ export default {
         e.stopPropagation()
       }
     },
-    delTask () {
-      this.$store.commit('SETDETAILSVISIBILITY', false)
-      this.$message({
-        type: 'success',
-        message: 'Deleted successfully!'
+    async updateTitle () {
+      const { data } = await this.axios.put('/item/' + this.task.id, {
+        title: xss(this.task.title)
       })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      }
     },
-    addSubtask () {
+    async updateList (list) {
+      if (list === 'Inbox') {
+        const { data } = await this.axios.put('/item/' + this.task.id, {
+          group_id: null
+        })
+
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        } else {
+          this.$bus.$emit('get-task-list')
+        }
+      } else {
+        const { data } = await this.axios.put('/item/' + this.task.id, {
+          group_id: list.id
+        })
+
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        } else {
+          this.$bus.$emit('get-task-list')
+        }
+      }
+    },
+    async updatePriority (priority) {
+      const { data } = await this.axios.put('/item/' + this.task.id, {
+        priority: priority
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-task-list')
+      }
+    },
+    async updateDesc (e) {
+      let desc = xss(e.target.innerHTML)
+
+      const { data } = await this.axios.put('/item/' + this.task.id, {
+        desc: desc
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      }
+    },
+    async addSubtask () {
       if (!this.subtaskInput) {
         return
       }
 
-      const subtaskLength = this.task.subtasks.length
-      let newSub = {
-        completed: false,
+      const userId = localStorage.getItem('userId')
+
+      const { data } = await this.axios.post('/item/create', {
+        type: 2,
         title: this.subtaskInput,
-        index: subtaskLength + 1
+        created_by: userId,
+        due_date: null,
+        parent_id: this.task.id
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        // reset task input
+        this.subtaskInput = ''
+
+        // update subtask list
+        await this.getSubtasks()
       }
-      this.task.subtasks.push(newSub)
-      this.subtaskInput = ''
+    },
+    async getSubtasks () {
+      const userId = localStorage.getItem('userId')
+
+      const { data } = await this.axios.get('/item/list?userid=' + userId, { params: {
+        type: 2,
+        parent_id: this.task.id
+      }})
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.subtasks = data.data
+      }
     },
     onEndDrag (e) {
-      this.$sortable(e, this.task.subtasks)
+      this.$sortable(e, this.subtasks)
     }
   },
   computed: {
     ...mapState({
       activeNavId: state => state.navId
     })
+  },
+  watch: {
+    task: {
+      deep: true,
+      handler: function (val) {
+        this.subtasks = val.subtasks
+      }
+    }
   }
 }
 </script>
@@ -253,6 +473,7 @@ export default {
 .task-details__duedate {
   color: #617fde;
   flex: auto;
+  cursor: pointer;
 }
 
 .task-details__duedate.expired {
