@@ -160,7 +160,19 @@ export default {
       this.$emit('edit-list', list)
     },
     onEndDrag (e) {
-      this.$sortable(e, this.lists)
+      this.$sortable(e, this.lists, 'group')
+    },
+    async updateGroupOrder (item) {
+      const { data } = await this.axios.put('/group/' + item.id + '?userid=' + item.created_by, {
+        order: item.order
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      }
     }
   },
   computed: mapState({
@@ -176,6 +188,10 @@ export default {
       await this.getItemSummary()
     })
     await this.getItemSummary()
+
+    this.$bus.$on('update-group-order', async (item) => {
+      await this.updateGroupOrder(item)
+    })
   }
 }
 </script>
