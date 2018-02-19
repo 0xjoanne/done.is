@@ -2,15 +2,16 @@
   <collapse-transition>
     <div
       :class="['task-item__container', { 'active' : selectedTask.id === task.id }]"
-      :style="{ borderLeftColor: task.color }"
-      v-if="!task.completed">
+      :style="{ borderLeftColor: task.group_color || 'white' }"
+      v-if="toggleDoneItem()">
       <flex-box
         class="task-item__content">
         <i class="iconfont icon-drag-vertical task-item__drag"></i>
 
         <checkbox
-          :completed.sync="task.completed"
-          :priority-id="task.priority_id">
+          :completed.sync="task.is_done"
+          :priority-id="task.priority"
+          @toggle-status="updateDoneStatus">
         </checkbox>
 
         <div
@@ -56,13 +57,59 @@ export default {
   methods: {
     formatshortdate,
     isexpired,
-    checkDetails (task) {
+    async checkDetails (task) {
+      const userId = localStorage.getItem('userId')
+
+      const { data } = await this.axios.get('/item/list?userid=' + userId, { params : {
+        type: 2,
+        parent_id: task.id
+      }})
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg,
+        })
+      } else {
+        task.subtasks = data.data
+      }
+
       this.$store.commit('SETTASK', task)
       this.$store.commit('SETDETAILSVISIBILITY', true)
+    },
+    async updateDoneStatus () {
+      const { data } = await this.axios.put('/item/' + this.task.id, {
+        is_done: this.task.is_done,
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-item-summary')
+      }
+    },
+    toggleDoneItem () {
+      if (this.activeNavId === '4') {
+        if (this.task.is_done) {
+          return true
+        } else {
+          return false
+        }
+      } else {
+        if (this.task.is_done) {
+          return false
+        } else {
+          return true
+        }
+      }
     }
   },
   computed: mapState({
-    selectedTask: state => state.task
+    selectedTask: state => state.task,
+    activeNavId: state => state.navId
   })
 }
 </script>
