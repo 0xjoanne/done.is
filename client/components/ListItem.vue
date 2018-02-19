@@ -27,11 +27,11 @@
       </span>
     </flex-box>
 
-    <!-- <div
-      v-if="item.tasks.length !== 0 && lengthVisible && !dropdownVisible"
+    <div
+      v-if="item.count !== 0 && lengthVisible && !dropdownVisible"
       class="list-item__num">
-      {{ item.tasks.length }}
-    </div> -->
+      {{ item.count }}
+    </div>
 
     <el-dropdown
       trigger="click"
