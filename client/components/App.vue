@@ -136,6 +136,10 @@ div.el-message {
   background-color: rgba(230, 38, 61, 0.9) !important;
 }
 
+.el-message--warning {
+  background-color: rgba(239, 194, 77, 0.9) !important;
+}
+
 .el-message__icon,
 .el-message__content {
   color: white !important;
