@@ -314,6 +314,14 @@ export default {
       }
     },
     async updateTitle () {
+      if (!this.task.title) {
+        this.$message({
+          message: 'The title of task cannot be empty.',
+          type: 'warning'
+        })
+        return
+      }
+
       const { data } = await this.axios.put('/item/' + this.task.id, {
         title: xss(this.task.title)
       })
