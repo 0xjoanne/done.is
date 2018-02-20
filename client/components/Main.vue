@@ -31,7 +31,8 @@
         <!-- task list  -->
         <div
           v-if="tasks.length"
-          class="main-content__task-list">
+          class="main-content__task-list"
+          :style="{ height: taskListHeight }">
           <div
             v-for="item in tasks"
             :key="item.id">
@@ -122,8 +123,18 @@ export default {
         await this.getTasksByOrder('list', search)
       }
     },
-    cleanTrash () {
+    async cleanTrash () {
+      const userId = localStorage.userId
+      const { data } = await this.axios.delete('/item/clear?userid=' + userId)
 
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-task-list')
+      }
     }
   },
   computed: {
@@ -132,13 +143,13 @@ export default {
       detailsVisibility: state => state.detailsVisibility,
       activeNavId: state => state.navId
     }),
-    // taskListHeight () {
-    //   if (this.taskInputExpansion) {
-    //     return 'calc(100vh - 231px)'
-    //   } else {
-    //     return 'calc(100vh - 185px)'
-    //   }
-    // }
+    taskListHeight () {
+      if (this.activeNavId === '5' || this.activeNavId === '6') {
+        return 'calc(100vh - 125px)'
+      } else {
+        return 'calc(100vh - 231px)'
+      }
+    }
   },
   async created () {
     this.$bus.$on('get-task-list', async () => {
@@ -171,6 +182,5 @@ export default {
 
 .main-content__task-list {
   overflow: scroll;
-  height: calc(100vh - 231px);
 }
 </style>
