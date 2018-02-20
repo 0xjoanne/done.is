@@ -23,7 +23,7 @@
         class="task-input__preset-item"
         @click.native="toggleCalendar">
         <i
-          class="iconfont icon-calendar task-input__preset-icon">
+          class="iconfont icon-calendar task-input__preset-icon cursor--pointer">
         </i>
 
         <span

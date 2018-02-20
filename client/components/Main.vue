@@ -125,7 +125,7 @@ export default {
     },
     async cleanTrash () {
       const userId = localStorage.userId
-      const { data } = await this.axios.delete('/item/clear?userid=' + userId)
+      const { data } = await this.axios.put('/item/clear?userid=' + userId)
 
       if (data.error !== 0) {
         this.$message({
