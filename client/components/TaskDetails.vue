@@ -80,10 +80,11 @@
 
         <div class="task-details__desc-container">
           <medium-editor
+            id="medium-editor"
             :text="task.desc"
             :options="descOptions"
             class="task-details__desc"
-            @blur.native="updateDesc">
+            v-click-outside="updateDesc">
           </medium-editor>
         </div>
 
@@ -174,7 +175,7 @@ export default {
           ],
         },
         placeholder: {
-          text: 'Description'
+          text: ''
         },
         autoLink: true,
         targetBlank: true
@@ -377,7 +378,23 @@ export default {
       }
     },
     async updateDesc (e) {
-      let desc = xss(e.target.innerHTML)
+      // let desc = xss(e.target.innerHTML, {
+      //   whiteList: {
+      //     p: [],
+      //     div: [],
+      //     br: [],
+      //     b: [],
+      //     u: [],
+      //     i: [],
+      //     strike: [],
+      //     a: ["href", "title", "target"],
+      //     h2: [],
+      //     h3: [],
+      //     span: []
+      //   }
+      // })
+
+      let desc = document.querySelector('#medium-editor').innerHTML
 
       const { data } = await this.axios.put('/item/' + this.task.id, {
         desc: desc
@@ -388,6 +405,8 @@ export default {
           type: 'error',
           message: data.msg
         })
+      } else {
+        this.task.desc = desc
       }
     },
     async addSubtask () {

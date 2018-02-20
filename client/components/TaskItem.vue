@@ -58,24 +58,27 @@ export default {
     formatshortdate,
     isexpired,
     async checkDetails (task) {
-      const userId = localStorage.getItem('userId')
+      await this.$nextTick()
+      setTimeout(async () => {
+        const userId = localStorage.getItem('userId')
 
-      const { data } = await this.axios.get('/item/list?userid=' + userId, { params : {
-        type: 2,
-        parent_id: task.id
-      }})
+        const { data } = await this.axios.get('/item/list?userid=' + userId, { params : {
+          type: 2,
+          parent_id: task.id
+        }})
 
-      if (data.error !== 0) {
-        this.$message({
-          type: 'error',
-          message: data.msg,
-        })
-      } else {
-        task.subtasks = data.data
-      }
+        if (data.error !== 0) {
+          this.$message({
+            type: 'error',
+            message: data.msg,
+          })
+        } else {
+          task.subtasks = data.data
+        }
 
-      this.$store.commit('SETTASK', task)
-      this.$store.commit('SETDETAILSVISIBILITY', true)
+        this.$store.commit('SETTASK', task)
+        this.$store.commit('SETDETAILSVISIBILITY', true)
+      }, 100)
     },
     async updateDoneStatus () {
       const { data } = await this.axios.put('/item/' + this.task.id, {
