@@ -21,7 +21,7 @@
           <i
             class="iconfont icon-clean icon main-content__clean"
             v-if="activeNavId === '6'"
-            @click="cleanTrash">
+            @click="clearTrash">
           </i>
         </flex-box>
 
@@ -123,7 +123,18 @@ export default {
         await this.getTasksByOrder('list', search)
       }
     },
-    async cleanTrash () {
+    clearTrash () {
+      this.$confirm('Tasks will be permanently deleted. Are you sure you want to clear trash? ', 'Clear Trash', {
+        confirmButtonText: 'Clear',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.confirmClear()
+      }).catch(() => {
+
+      })
+    },
+    async confirmClear () {
       const userId = localStorage.userId
       const { data } = await this.axios.put('/item/clear?userid=' + userId)
 
