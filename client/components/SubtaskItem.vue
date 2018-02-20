@@ -10,11 +10,11 @@
     </el-checkbox>
 
     <div
+      v-html="subtask.title"
       contenteditable="true"
-      @keyup.enter="updateSubtask"
-      @blur="checkSubtask"
+      @keydown="preventEnter"
+      @blur="updateSubtask"
       class="subtask-item__title">
-      {{ subtask.title }}
     </div>
 
     <i
@@ -26,6 +26,7 @@
 
 <script>
 import FlexBox from 'components/Layout/FlexBox'
+import xss from 'xss'
 
 export default {
   props: {
@@ -43,8 +44,27 @@ export default {
     }
   },
   methods: {
-    async updateSubtask () {
-      
+    preventEnter (e) {
+      if (e.keyCode === 13) {
+        e.cancelBubble = true
+        e.preventDefault()
+        e.stopPropagation()
+      }
+    },
+    async updateSubtask (e) {
+      if (!e.target.innerHTML.trim()) {
+        return
+      }
+
+      const { data } = await this.axios.put('/item/' + this.subtask.id, {
+        title: xss(e.target.innerHTML)
+      })
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      }
     },
     async delSubtask () {
       const { data } = await this.axios.delete('/item/' + this.subtask.id)
@@ -56,11 +76,6 @@ export default {
         })
       } else {
         this.$bus.$emit('get-subtasks')
-      }
-    },
-    checkSubtask (event) {
-      if (!event.srcElement.innerHTML.trim()) {
-        console.log('empty')
       }
     }
   }
