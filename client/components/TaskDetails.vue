@@ -457,6 +457,9 @@ export default {
     }
   },
   async created () {
+    this.$bus.$on('get-subtasks', async () => {
+      await this.getSubtasks()
+    })
     await this.getSubtasks()
 
     this.$bus.$on('update-subtask-order', async (item) => {

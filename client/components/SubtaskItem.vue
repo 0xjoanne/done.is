@@ -11,7 +11,7 @@
 
     <div
       contenteditable="true"
-      @keyup.enter="saveSubtask"
+      @keyup.enter="updateSubtask"
       @blur="checkSubtask"
       class="subtask-item__title">
       {{ subtask.title }}
@@ -39,16 +39,24 @@ export default {
   },
   data () {
     return {
-      completed: false,
-      title: 'hello world'
+
     }
   },
   methods: {
-    saveSubtask () {
-
+    async updateSubtask () {
+      
     },
-    delSubtask () {
+    async delSubtask () {
+      const { data } = await this.axios.delete('/item/' + this.subtask.id)
 
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-subtasks')
+      }
     },
     checkSubtask (event) {
       if (!event.srcElement.innerHTML.trim()) {
