@@ -5,7 +5,7 @@
     <!-- side nav top -->
     <nav-item
       v-for="(item, index) in navs"
-      v-if="index < 4"
+      v-if="index < 5"
       :key="item.id"
       :icon="item.icon"
       :label="item.title"
@@ -53,7 +53,7 @@
     <!-- side nav bottom -->
     <nav-item
       v-for="(item, index) in navs"
-      v-if="index > 3"
+      v-if="index > 4"
       :key="item.id"
       :icon="item.icon"
       :label="item.title"
@@ -82,6 +82,11 @@ export default {
     return {
       activeTab: 'group',
       navs: [{
+        id: '0',
+        title: 'All',
+        num: 0,
+        icon: 'inbox'
+      }, {
         id: '1',
         title: 'Inbox',
         num: 0,
@@ -140,10 +145,11 @@ export default {
         })
       } else {
         let count = data.data
-        this.navs[0].num = count.inbox
-        this.navs[1].num = count.today
-        this.navs[2].num = count.next
-        this.navs[3].num = count.done
+        this.navs[0].num = count.all
+        this.navs[1].num = count.inbox
+        this.navs[2].num = count.today
+        this.navs[3].num = count.next
+        this.navs[4].num = count.done
       }
     },
     onClickNav (title, id) {
