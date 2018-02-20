@@ -146,6 +146,7 @@ export default {
 } */
 
 .task-item__title {
+  height: 100%;
   margin: 0 10px;
   font-size: 15px;
   white-space: nowrap;

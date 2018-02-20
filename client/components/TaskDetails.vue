@@ -315,15 +315,13 @@ export default {
     },
     async updateTitle () {
       if (!this.task.title) {
-        this.$message({
-          message: 'The title of task cannot be empty.',
-          type: 'warning'
-        })
+        this.task.title = this.taskTitle
         return
       }
 
+      const title = xss(this.task.title)
       const { data } = await this.axios.put('/item/' + this.task.id, {
-        title: xss(this.task.title)
+        title
       })
 
       if (data.error !== 0) {
@@ -331,6 +329,8 @@ export default {
           type: 'error',
           message: data.msg
         })
+      } else {
+        this.$store.commit('SETTASKTITLE', title)
       }
     },
     async updateList (list) {
@@ -453,6 +453,7 @@ export default {
   },
   computed: {
     ...mapState({
+      taskTitle: state => state.taskTitle,
       activeNavId: state => state.navId
     })
   },

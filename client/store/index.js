@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const state = {
   userId: '',
   task: {},
+  taskTitle: '',
   detailsVisibility: false,
   navTitle: 'Inbox',
   navId: '1',
@@ -18,6 +19,10 @@ const mutations = {
   },
   SETTASK (state, task) {
     state.task = task
+    state.taskTitle = task.title
+  },
+  SETTASKTITLE (state, title) {
+    state.taskTitle = title
   },
   SETDETAILSVISIBILITY (state, visibility) {
     state.detailsVisibility = visibility

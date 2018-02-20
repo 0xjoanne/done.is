@@ -53,6 +53,7 @@ export default {
     },
     async updateSubtask (e) {
       if (!e.target.innerHTML.trim()) {
+        e.target.innerHTML = this.subtask.title
         return
       }
 
