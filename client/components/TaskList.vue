@@ -1,7 +1,10 @@
 <template>
   <collapse-transition>
     <div v-if="activeNavId === '4' ? list.content.length : list.content.filter(item => { return item.is_done === false }).length">
-      <div class="task-list__header-container cursor--pointer">
+      <flex-box
+        class="task-list__header-container cursor--pointer"
+        @mouseenter.native="mouseenterTaskList"
+        @mouseleave.native="mouseleaveTaskList">
         <div
           class="task-list__header"
           @click="toggleListExpansion(list)">
@@ -11,7 +14,29 @@
           </i>
           <span>{{ list.title }}</span>
         </div>
-      </div>
+
+        <el-dropdown
+          trigger="click"
+          placement="bottom"
+          class="task-list__dropdown"
+          @visible-change="handleVisibleChange"
+          v-show="dropdownIconVisible || dropdownVisible"
+          @command="handleCommand">
+          <i
+            class="el-icon-more">
+          </i>
+
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command = "unarchive">
+              Unarchive
+            </el-dropdown-item>
+
+            <el-dropdown-item command = "delete">
+              Delete
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </flex-box>
 
       <collapse-transition>
         <div
@@ -38,6 +63,7 @@
 
 <script>
 import draggable from 'vuedraggable'
+import FlexBox from 'components/Layout/FlexBox'
 import TaskItem from 'components/TaskItem'
 import CollapseTransition from 'components/CollapseTransition'
 import { mapState } from 'vuex'
@@ -45,6 +71,7 @@ import { mapState } from 'vuex'
 export default {
   components: {
     draggable,
+    FlexBox,
     TaskItem,
     CollapseTransition
   },
@@ -57,7 +84,9 @@ export default {
   data () {
     return {
       caretRotate: 'rotate(0)',
-      showList: true
+      showList: true,
+      dropdownIconVisible: false,
+      dropdownVisible: false
     }
   },
   methods: {
@@ -67,6 +96,69 @@ export default {
         this.caretRotate = 'rotate(0)'
       } else {
         this.caretRotate = 'rotate(-90deg)'
+      }
+    },
+    mouseenterTaskList () {
+      if (this.activeNavId === '5') {
+        this.dropdownIconVisible = true
+      }
+    },
+    mouseleaveTaskList () {
+      this.dropdownIconVisible = false
+    },
+    handleVisibleChange (show) {
+      this.dropdownVisible = show
+    },
+    handleCommand (command) {
+      if (command === 'unarchive') {
+        this.unarchiveList()
+      } else if (command === 'delete') {
+        this.deleteList()
+      }
+    },
+    async unarchiveList () {
+      const { data } = await this.axios.put('/group/' + this.list.group_id + '/unarchive')
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-group-list')
+        this.$bus.$emit('get-task-list')
+        this.$message({
+          type: 'success',
+          message: 'Unarchived successfully!'
+        })
+      }
+    },
+    deleteList () {
+      this.$confirm('All tasks of this list will be deleted. Are you sure you want to delete "' + this.list.title + '"?', 'Delete List', {
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        this.confirmDelete()
+      }).catch(() => {
+
+      })
+    },
+    async confirmDelete () {
+      const { data } = await this.axios.delete('/group/' + this.list.group_id)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$bus.$emit('get-group-list')
+        this.$bus.$emit('get-task-list')
+        this.$message({
+          type: 'success',
+          message: 'Deleted successfully!'
+        })
       }
     },
     onEndDrag (e) {
@@ -103,4 +195,11 @@ export default {
   font-size: 16px;
 }
 
+.task-list__dropdown {
+  margin-right: 20px;
+}
+
+.task-list__dropdown.el-dropdown {
+  color: #aaa;
+}
 </style>
