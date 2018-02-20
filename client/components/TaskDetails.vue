@@ -428,7 +428,19 @@ export default {
       }
     },
     onEndDrag (e) {
-      this.$sortable(e, this.subtasks)
+      this.$sortable(e, this.subtasks, 'subtask')
+    },
+    async updateSubtaskOrder (item) {
+      const { data } = await this.axios.put('/item/' + item.id, {
+        order: item.order
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      }
     }
   },
   computed: {
@@ -443,6 +455,13 @@ export default {
         this.subtasks = val.subtasks
       }
     }
+  },
+  async created () {
+    await this.getSubtasks()
+
+    this.$bus.$on('update-subtask-order', async (item) => {
+      await this.updateSubtaskOrder(item)
+    })
   }
 }
 </script>

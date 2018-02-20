@@ -163,7 +163,7 @@ export default {
       this.$sortable(e, this.lists, 'group')
     },
     async updateGroupOrder (item) {
-      const { data } = await this.axios.put('/group/' + item.id + '?userid=' + item.created_by, {
+      const { data } = await this.axios.put('/group/' + item.id, {
         order: item.order
       })
 
