@@ -14,7 +14,7 @@
             :model="profileForm">
             <el-form-item>
               <img
-                src="../assets/avatar.png"
+                :src="profileForm.avatar || defaultAvatar"
                 alt="avatar"
                 class="settings__avatar">
             </el-form-item>
@@ -70,6 +70,8 @@
 
 <script>
 import FlexBox from 'components/Layout/FlexBox'
+const defaultAvatar = require('../assets/avatar.png')
+
 
 export default {
   components: {
@@ -77,9 +79,28 @@ export default {
   },
   data () {
     return {
+      defaultAvatar,
       profileForm: {},
       pswForm: {}
     }
+  },
+  methods: {
+    async getUserInfo () {
+      const userId = localStorage.getItem('userId')
+      const { data } = await this.axios.get('/user/list?userid=' + userId)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.profileForm = data.data
+      }
+    },
+  },
+  async created () {
+    await this.getUserInfo()
   }
 }
 </script>
