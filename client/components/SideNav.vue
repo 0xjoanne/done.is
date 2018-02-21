@@ -85,7 +85,7 @@ export default {
         id: '0',
         title: 'All',
         num: 0,
-        icon: 'inbox'
+        icon: 'all'
       }, {
         id: '1',
         title: 'Inbox',

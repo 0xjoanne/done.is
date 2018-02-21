@@ -9,7 +9,7 @@ const state = {
   taskTitle: '',
   detailsVisibility: false,
   navTitle: 'Inbox',
-  navId: '1',
+  navId: '0',
   inputListTitle: 'Inbox'
 }
 
