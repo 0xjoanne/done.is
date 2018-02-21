@@ -37,6 +37,32 @@
             </div>
           </el-form>
         </el-tab-pane>
+
+        <el-tab-pane label="Password">
+          <el-form
+            :model="pswForm">
+            <el-form-item label="Old Password">
+              <el-input v-model="pswForm.old"></el-input>
+            </el-form-item>
+
+            <el-form-item label="New Password">
+              <el-input v-model="pswForm.new"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Confirm New Password">
+              <el-input v-model="pswForm.confirm"></el-input>
+            </el-form-item>
+
+            <div class="settings__btns">
+              <el-button
+                size="medium"
+                type="primary"
+                class="button--primary">
+                Update
+              </el-button>
+            </div>
+          </el-form>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -51,7 +77,8 @@ export default {
   },
   data () {
     return {
-      profileForm: {}
+      profileForm: {},
+      pswForm: {}
     }
   }
 }
