@@ -1,6 +1,6 @@
 <template>
   <collapse-transition>
-    <div v-if="activeNavId === '4' ? list.content.length : list.content.filter(item => { return item.is_done === false }).length">
+    <div v-if="taskListVisible">
       <flex-box
         class="task-list__header-container cursor--pointer"
         @mouseenter.native="mouseenterTaskList"
@@ -166,9 +166,18 @@ export default {
       console.log(this.list)
     }
   },
-  computed: mapState({
-    activeNavId: state => state.navId
-  })
+  computed: {
+    ...mapState({
+      activeNavId: state => state.navId
+    }),
+    taskListVisible () {
+      if (this.activeNavId === '4') {
+        return this.list.content.filter(item => { return item.is_done === true }).length
+      } else {
+        return this.list.content.filter(item => { return item.is_done === false }).length
+      }
+    }
+  }
 }
 </script>
 

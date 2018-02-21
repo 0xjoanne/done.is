@@ -161,6 +161,7 @@ export default {
         // update task list
         this.$bus.$emit('get-task-list')
         this.$bus.$emit('get-item-summary')
+        this.$bus.$emit('get-group-list')
 
         this.$message({
           type: 'success',

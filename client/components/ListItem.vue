@@ -28,7 +28,7 @@
     </flex-box>
 
     <div
-      v-if="item.count !== 0 && lengthVisible && !dropdownVisible"
+      v-if="item.count !== 0 && countVisible && !dropdownVisible"
       class="list-item__num">
       {{ item.count }}
     </div>
@@ -81,18 +81,18 @@ export default {
   },
   data () {
     return {
-      lengthVisible: true,
+      countVisible: true,
       dropdownIconVisible: false,
       dropdownVisible: false
     }
   },
   methods: {
     mouseenterListItem () {
-      this.lengthVisible = false
+      this.countVisible = false
       this.dropdownIconVisible = true
     },
     mouseleaveListItem () {
-      this.lengthVisible = true
+      this.countVisible = true
       this.dropdownIconVisible = false
     },
     openDropdown (e) {
