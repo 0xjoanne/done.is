@@ -43,6 +43,7 @@
 import FlexBox from 'components/Layout/FlexBox'
 import { mapState } from 'vuex'
 const defaultAvatar = require('../assets/avatar.png')
+
 export default {
   components: {
     FlexBox

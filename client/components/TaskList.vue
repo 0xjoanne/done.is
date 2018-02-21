@@ -192,6 +192,7 @@ export default {
   line-height: 60px;
   color: #aaa;
   border-bottom: 1px solid #fbfbfb;
+  flex: auto;
 }
 
 .task-list__content,
