@@ -18,7 +18,7 @@
         @command="handleCommand">
         <div class="header__profile cursor--pointer">
           <img
-            src="https://timgsa.baidu.com/timg?image&quality=100&size=b9999_10000&sec=1510278897&di=a158da35f8b26f484be5619830d8726e&imgtype=jpg&er=1&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ae2958ae3c46a801219c774d7171.jpg%40900w_1l_2o_100sh.jpg"
+            :src="user.avatar || defaultAvatar"
             alt="avatar"
             class="header__profile-avatar">
         </div>
@@ -42,21 +42,36 @@
 <script>
 import FlexBox from 'components/Layout/FlexBox'
 import { mapState } from 'vuex'
-
+const defaultAvatar = require('../assets/avatar.png')
 export default {
   components: {
     FlexBox
   },
   data () {
     return {
+      defaultAvatar,
       msgNum: 12,
-      addInput: ''
+      addInput: '',
+      user: {}
     }
   },
   methods: {
+    async getUserInfo () {
+      const userId = localStorage.getItem('userId')
+      const { data } = await this.axios.get('/user/list?userid=' + userId)
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.user = data.data
+      }
+    },
     handleCommand (command) {
       if (command === 'settings') {
-
+        this.$router.replace('/settings')
       } else if (command === 'logout') {
         localStorage.setItem('userId', '')
         this.$router.replace('/login')
@@ -65,7 +80,13 @@ export default {
   },
   computed: mapState({
     activeNav: state => state.navTitle
-  })
+  }),
+  async created () {
+    this.$bus.$on('get-user-info', async () => {
+      await this.getUserInfo()
+    })
+    await this.getUserInfo()
+  }
 }
 </script>
 
