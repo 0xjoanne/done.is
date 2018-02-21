@@ -34,7 +34,8 @@
               <el-button
                 size="medium"
                 type="primary"
-                class="button--primary">
+                class="button--primary"
+                @click="updateProfile">
                 Update
               </el-button>
             </div>
@@ -101,6 +102,26 @@ export default {
         this.profileForm = data.data
       }
     },
+    async updateProfile () {
+      const userId = localStorage.getItem('userId')
+
+      const { data } = await this.axios.put('/user/' + userId, {
+        name: this.profileForm.name,
+        email: this.profileForm.email
+      })
+
+      if (data.error !== 0) {
+        this.$message({
+          type: 'error',
+          message: data.msg
+        })
+      } else {
+        this.$message({
+          type: 'success',
+          message: 'Updated successfully!'
+        })
+      }
+    }
   },
   async created () {
     await this.getUserInfo()
