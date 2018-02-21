@@ -3,7 +3,10 @@
     <el-card class="settings__content">
       <flex-box slot="header" class="settings__header">
         <span>Settings</span>
-        <i class="el-icon-close cursor--pointer"></i>
+        <i
+          class="el-icon-close cursor--pointer"
+          @click="$router.replace('/')">
+        </i>
       </flex-box>
 
       <el-tabs
