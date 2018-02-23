@@ -49,7 +49,7 @@ export default {
 .nav-item:hover,
 .nav-item.active {
   color: white;
-  background: #7d82963b;
+  background: rgba(125, 130, 150, 0.23);
 }
 
 .nav-item .iconfont {
