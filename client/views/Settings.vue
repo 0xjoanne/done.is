@@ -15,11 +15,15 @@
         <el-tab-pane label="Profile">
           <el-form
             :model="profileForm">
-            <el-form-item>
+            <el-form-item class="settings__avatar">
               <img
                 :src="profileForm.avatar || defaultAvatar"
                 alt="avatar"
-                class="settings__avatar">
+                class="settings__avatar-img">
+
+              <div class="settings__avatar-editor">
+                <i class="iconfont icon-camera"></i>
+              </div>
             </el-form-item>
 
             <el-form-item label="Name">
@@ -167,8 +171,36 @@ export default {
 }
 
 .settings__avatar {
+  position: relative;
+}
+
+.settings__avatar-img,
+.settings__avatar-editor {
   width: 100px;
   height: 100px;
   border-radius: 50px;
+  cursor: pointer;
+}
+
+.settings__avatar-editor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  text-align: center;
+}
+
+.settings__avatar-editor:hover {
+  opacity: 1;
+}
+
+.settings__avatar-editor .iconfont{
+  color: white;
+  font-size: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50px;
+  transform: translate(-50%,-60%);
 }
 </style>
