@@ -75,7 +75,7 @@
 * MIT License
 */
 
-import calendar from './calendar.js'
+import calendar from './Calendar.js'
 export default {
   props: {
     // 多选模式
