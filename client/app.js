@@ -33,7 +33,7 @@ Vue.mixin({
 })
 
 const userId = localStorage.getItem('userId')
-if (userId) {
+if (!userId) {
   router.replace('/login')
 }
 
