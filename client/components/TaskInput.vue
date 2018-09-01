@@ -148,7 +148,8 @@ export default {
         title: this.taskTitle,
         created_by: userId,
         due_date: due_date,
-        group_id: this.listId || null,
+        // group_id: this.listId || null,
+        group_id: this.$route.params.group_id, // get from router instead of listId
         priority: this.priority
       })
 

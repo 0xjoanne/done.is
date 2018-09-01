@@ -14,6 +14,10 @@ export default new Router({
       component: Home
     },
     {
+      path: '/groups/:group_id',
+      component: Home
+    },
+    {
       path: '/login',
       component: Login
     },

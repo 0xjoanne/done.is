@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     async getTasksByOrder(order, search) {
-      this.tasks = []
+      // this.tasks = []
       const userId = localStorage.getItem('userId')
       const { data } = await this.axios.get('/item/list?userid=' + userId + '&nav=' + this.activeNavId + '&order=' + order + '&title=' + search)
 

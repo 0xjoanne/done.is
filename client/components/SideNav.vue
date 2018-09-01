@@ -158,6 +158,7 @@ export default {
       this.$store.commit('SETDETAILSVISIBILITY', false)
       this.$store.commit('SETTASK', {})
       this.$bus.$emit('get-task-list')
+      this.$router.push(`/groups/${id}`)
     },
     addList () {
       this.$emit('add-list')

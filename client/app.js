@@ -13,10 +13,12 @@ sync(store, router)
 Vue.use(ElementUI)
 Vue.use(vClickOutside)
 
-axios.defaults.baseURL = 'http://localhost:7001'
-if (process.env.NODE_ENV === 'prod') {
-  axios.defaults.baseURL = 'https://api.done.is'
-}
+// axios.defaults.baseURL = 'http://localhost:7001'
+// if (process.env.NODE_ENV === 'prod') {
+//   axios.defaults.baseURL = 'https://api.done.is'
+// }
+
+axios.defaults.baseURL = 'https://api.done.mao.li'
 
 Vue.mixin({
   created () {
